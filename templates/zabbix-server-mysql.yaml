@@ -1,0 +1,92 @@
+{{- if and .Values.server.enabled -}}
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: zabbix-server
+  labels:
+    app: zabbix
+    tier: server
+    environment: dev
+  namespace: zabbix
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: zabbix-server
+        app: zabbix
+    spec:
+      containers:
+        - name: zabbix-server
+          image: "zabbix/zabbix-server-{{ .Values.server.type }}:alpine-{{ .Values.server.version }}"
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 10051
+            protocol: TCP
+            name: zabbix-trapper
+          readinessProbe:
+            tcpSocket:
+              port: zabbix-trapper
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: zabbix-trapper
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          env:
+          {{- if eq .Values.server.type "mysql" }}
+          - name: MYSQL_USER
+            valueFrom:
+             secretKeyRef:
+              name: db-secret
+              key: db-zbx-user
+          - name: MYSQL_PASSWORD
+            valueFrom:
+             secretKeyRef:
+              name: db-secret
+              key: db-zbx-pass
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+             secretKeyRef:
+              name: db-secret
+              key: db-root-pass
+          - name: DB_SERVER_HOST
+            value: "{{ .Values.server.database.host }}"
+          - name: MYSQL_DATABASE
+            value: "{{ .Values.server.database.name }}"
+          {{- end }}
+          - name: ZBX_JAVAGATEWAY_ENABLE
+            value: "'{{ .Values.server.javagateway.enable | default "true" }}'"
+          - name: ZBX_STARTJAVAPOLLERS
+            value: "'{{ .Values.server.javagateway.javapollers | default "5" }}'"
+          - name: ZBX_ENABLE_SNMP_TRAPS
+            value: "true"
+          - name: ZBX_STARTPROXYPOLLERS
+            value: "5"
+          - name: ZBX_PROXYCONFIGFREQUENCY
+            value: "60"
+          {{- range $key, $value := .Values.server.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
+          volumeMounts:
+          - name: zabbix-db-storage
+            mountPath: /var/lib/zabbix/snmptraps/
+            readOnly: true
+        - name: zabbix-snmptraps
+          image: "zabbix/zabbix-snmptraps:alpine-{{ .Values.server.version }}"
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 1162
+            protocol: UDP
+            name: snmp-trap
+          volumeMounts:
+          - name: zabbix-db-storage
+            mountPath: /var/lib/zabbix/snmptraps/
+            readOnly: false
+      volumes:
+       - hostPath:
+          path: /zabbix/
+         name: zabbix-db-storage
+{{- end }}

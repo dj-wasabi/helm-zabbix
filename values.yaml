@@ -1,0 +1,17 @@
+# Default values for helm-zabbix.
+
+server:
+  enabled: true
+  type: mysql
+  version: 4.4-latest
+
+  database:
+    name: zabbix
+    host: mysql-8.default.svc.cluster.local
+
+  javagateway:
+    enable: true
+    javapollers: 5
+
+  externalIPs: []
+  env: {}

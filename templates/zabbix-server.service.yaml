@@ -1,0 +1,24 @@
+{{- if and .Values.server.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-server
+  labels:
+    app: zabbix
+  namespace: zabbix
+spec:
+  ports:
+  - port: 10051
+    targetPort: 10051
+    name: zabbix-trapper
+  - port: 162
+    targetPort: 1162
+    protocol: UDP
+    name: snmp-trap
+  selector:
+    name: zabbix-server
+{{- if .Values.server.externalIPs }}
+  externalIPs:
+  {{- toYaml .Values.server.externalIPs | nindent 8 }}
+{{- end }}
+{{- end }}
