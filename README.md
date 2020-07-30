@@ -1,6 +1,8 @@
 # HELM-ZABBIX
 
-This HELM Package will install (all|some) of the Zabbix components onto a Kubernetes environment.
+[WIP] Work in Progress
+
+This HELM Chart will install (all|some) of the Zabbix components onto a Kubernetes environment.
 
 
 ## Installation
@@ -13,9 +15,9 @@ kubectl create secret generic db-secret -n zabbix --from-literal=db-zbx-user=zab
 
 Parameter | Description
 --------- | -----------
-db-zbx-user|The username that Zabbix can use to authenticate against a (MySQL|PgSQL) database.
-db-zbx-pass|The password that Zabbix can use to authenticate against a (MySQL|PgSQL) database.
-db-root-pass|The (MySQL|PgSQL) ROOT password.
+db-zbx-user|The username that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
+db-zbx-pass|The password that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
+db-root-pass|The (MySQL or PgSQL) ROOT password.
 
 
 
