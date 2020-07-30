@@ -2,7 +2,7 @@
 
 [WIP] Work in Progress (I've started a puppet module (owned by vox-populi now), have created several Ansible roles (Now part of the collection.zabbix) so why not starting a HELM Chart.)
 
-This HELM Chart will install (all|some) of the Zabbix components onto a Kubernetes environment. This is based on this https://github.com/zabbix/zabbix-docker/blob/4.4/kubernetes.yaml file.
+This HELM Chart will install (all|some) of the Zabbix components onto a Kubernetes environment. This is based on this https://github.com/zabbix/zabbix-docker/blob/5.0/kubernetes.yaml file.
 
 ## Dependencies
 
@@ -34,7 +34,7 @@ Parameter | Description | Default
 --------- | ----------- | -------
 server.enabled |If the Zabbix Server needs to be deployed or not. | `true`
 server.type| The database type to use.| `mysql`
-server.version|The version of the Zabbix Server.| `4.4-latest`
+server.version|The version of the Zabbix Server.| `5.0-latest`
 server.database.name|The name of the database| `zabbix`
 server.database.host|The host of the database| `zabbix`
 server.javagateway.enable| If the JavaGateway needs to be enabled.| `true`

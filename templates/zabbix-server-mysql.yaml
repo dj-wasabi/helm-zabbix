@@ -60,8 +60,10 @@ spec:
             value: "'{{ .Values.server.javagateway.enable | default "true" }}'"
           - name: ZBX_STARTJAVAPOLLERS
             value: "'{{ .Values.server.javagateway.javapollers | default "5" }}'"
+          {{- if .Values.server.snmptraps }}
           - name: ZBX_ENABLE_SNMP_TRAPS
             value: "true"
+          {{- end }}
           - name: ZBX_STARTPROXYPOLLERS
             value: "5"
           - name: ZBX_PROXYCONFIGFREQUENCY
@@ -70,10 +72,13 @@ spec:
           - name: {{ $key }}
             value: {{ $value | quote }}
           {{- end }}
+          {{- if .Values.server.snmptraps }}
           volumeMounts:
           - name: zabbix-db-storage
             mountPath: /var/lib/zabbix/snmptraps/
             readOnly: true
+          {{- end }}
+        {{- if .Values.server.snmptraps }}
         - name: zabbix-snmptraps
           image: "zabbix/zabbix-snmptraps:alpine-{{ .Values.server.version }}"
           imagePullPolicy: Always
@@ -85,8 +90,11 @@ spec:
           - name: zabbix-db-storage
             mountPath: /var/lib/zabbix/snmptraps/
             readOnly: false
+        {{- end }}
+      {{- if .Values.server.snmptraps }}
       volumes:
        - hostPath:
           path: /zabbix/
          name: zabbix-db-storage
+      {{- end }}
 {{- end }}

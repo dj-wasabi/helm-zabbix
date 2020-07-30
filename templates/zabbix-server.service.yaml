@@ -11,10 +11,12 @@ spec:
   - port: 10051
     targetPort: 10051
     name: zabbix-trapper
+  {{- if .Values.server.snmptraps }}
   - port: 162
     targetPort: 1162
     protocol: UDP
     name: snmp-trap
+  {{- end }}
   selector:
     name: zabbix-server
 {{- if .Values.server.externalIPs }}

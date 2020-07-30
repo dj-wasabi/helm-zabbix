@@ -13,5 +13,7 @@ server:
     enable: true
     javapollers: 5
 
+  snmptraps:
+    enabled: true
   externalIPs: []
   env: {}
