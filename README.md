@@ -37,6 +37,3 @@ server.javagateway.javapollers|The amount of pollers for the JavaGateway| `5`
 server.externalIPs|A list with IPs of outside Kubernetes to access the server| `[]`
 server.env|A dict for adding environment variables| `{}`
 
-
-
-kubectl create secret generic db-secret -n zabbix --from-literal=db-zbx-user=zabbix-username --from-literal=db-zbx-pass=zabbix-password --from-literal=db-root-pass='Pass*w0rd!'
