@@ -1,16 +1,21 @@
 # HELM-ZABBIX
 
-[WIP] Work in Progress
+[WIP] Work in Progress (I've started a puppet module (owned by vox-populi now), have created several Ansible roles (Now part of the collection.zabbix) so why not starting a HELM Chart.)
 
-This HELM Chart will install (all|some) of the Zabbix components onto a Kubernetes environment.
+This HELM Chart will install (all|some) of the Zabbix components onto a Kubernetes environment. This is based on this https://github.com/zabbix/zabbix-docker/blob/4.4/kubernetes.yaml file.
 
+## Dependencies
+
+This HELM Chart will only install the Zabbix specific components and it will not install any database instance. Before deploying this HELM Chart, please make sure you have either MySQL or PgSQL installed and running.
+
+There is no need for running MySQL or PgSQL in the same Kubernetes environment, this can be a (Physical) host or some cloud related instance like AWS RDS.
 
 ## Installation
 
-Create a secret
+Create a secret, containing some credentials needed for a Zabbix Server to connect to an database.
 
 ```
-kubectl create secret generic db-secret -n zabbix --from-literal=db-zbx-user=zabbix-user --from-literal=db-zbx-pass=zabbix-pass --from-literal=db-root-pass=changeme
+kubectl create secret generic server-db-secret -n zabbix --from-literal=db-zbx-user=zabbix-user --from-literal=db-zbx-pass=zabbix-pass --from-literal=db-root-pass=changeme
 ```
 
 Parameter | Description
