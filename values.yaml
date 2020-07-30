@@ -3,7 +3,7 @@
 server:
   enabled: true
   type: mysql
-  version: 4.4-latest
+  version: 5.0-latest
 
   database:
     name: zabbix
