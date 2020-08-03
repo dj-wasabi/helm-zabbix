@@ -24,8 +24,6 @@ db-zbx-user|The username that Zabbix can use to authenticate against a (MySQL or
 db-zbx-pass|The password that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
 db-root-pass|The (MySQL or PgSQL) ROOT password.
 
-
-
 ## Configuration
 
 The following table lists the configurable parameters of the Zabbix chart and their default values.
@@ -41,4 +39,10 @@ server.javagateway.enable| If the JavaGateway needs to be enabled.| `true`
 server.javagateway.javapollers|The amount of pollers for the JavaGateway| `5`
 server.externalIPs|A list with IPs of outside Kubernetes to access the server| `[]`
 server.env|A dict for adding environment variables| `{}`
+agent.enabled|If the Zabbix Agent needs to be deployed or not.|`true`
+agent.version|The version of the Zabbix Agent.| `5.0-latest`
+agent.server.host|.The FQDN on which the Zabbix Server is available.|`zabbix-server.zabbix.svc`
+agent.timeout|The timeout of the Zabbix Agent.|`10`
+agent.startagents|The amount of agents to start.|`3`
+agent.passiveagent: |If we need to allow passive checks.|`true`
 
