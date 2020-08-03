@@ -1,5 +1,8 @@
 # Default values for helm-zabbix.
 
+image:
+  pullPolicy: Always
+
 server:
   enabled: true
   type: mysql
@@ -17,3 +20,12 @@ server:
     enabled: true
   externalIPs: []
   env: {}
+
+agent:
+  enabled: true
+  version: 5.0-latest
+  server:
+    host: zabbix-server.zabbix.svc
+  timeout: 10
+  startagents: 3
+  passiveagent: true

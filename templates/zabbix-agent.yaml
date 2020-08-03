@@ -1,0 +1,53 @@
+{{- if and .Values.agent.enabled -}}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: zabbix-agent
+  labels:
+    app: zabbix
+    tier: agent
+  namespace: zabbix
+spec:
+  updateStrategy:
+   type: RollingUpdate
+   rollingUpdate:
+    maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: zabbix
+  template:
+    metadata:
+      labels:
+        name: zabbix-agent
+        app: zabbix
+    spec:
+      containers:
+        - name: zabbix-agent
+          image: "zabbix/zabbix-agent:alpine-{{ .Values.server.version }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          resources:
+           limits:
+            cpu: 100m
+            memory: 54Mi
+           requests:
+            cpu: 100m
+            memory: 54Mi
+          ports:
+          - containerPort: 10050
+            name: zabbix-agent
+          env:
+          - name: ZBX_SERVER_HOST
+            value: "{{ .Values.agent.server.host }}"
+          - name: ZBX_PASSIVE_ALLOW
+            value: "{{ .Values.agent.passiveagent }}"
+          - name: ZBX_STARTAGENTS
+            value: "{{ .Values.agent.startagents }}"
+          - name: ZBX_TIMEOUT
+            value: "{{ .Values.agent.timeout }}"
+          {{- range $key, $value := .Values.agent.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
+          securityContext:
+            privileged: true
+{{- end }}

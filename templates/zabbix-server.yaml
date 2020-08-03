@@ -19,7 +19,7 @@ spec:
       containers:
         - name: zabbix-server
           image: "zabbix/zabbix-server-{{ .Values.server.type }}:alpine-{{ .Values.server.version }}"
-          imagePullPolicy: Always
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           ports:
           - containerPort: 10051
             protocol: TCP
