@@ -9,6 +9,7 @@ The following Zabbix components are installed:
 {{ if .Values.web.enabled -}}
 * Zabbix Web
 {{- end }}
+
 {{ if .Values.ingress.enabled -}}
 {{- range .Values.ingress.hosts }}
 Zabbix web interface available on: {{ .host | quote }}
