@@ -1,0 +1,111 @@
+{{- if and .Values.web.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zabbix-web
+  labels:
+    app: zabbix-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zabbix-web
+  template:
+    metadata:
+      labels:
+        app: zabbix-web
+    spec:
+      containers:
+        - name: zabbix-web
+          image: zabbix/zabbix-web-nginx-{{ .Values.zabbix.database.type }}:alpine-{{ if .Values.web.version }}{{ .Values.web.version }}{{- else }}{{ .Values.zabbix.version }}{{- end }}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8080
+            name: web-http
+          - containerPort: 8443
+            name: web-https
+          resources:
+           limits:
+            cpu: 200m
+            memory: 400Mi
+           requests:
+            cpu: 200m
+            memory: 400Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: web-http
+              scheme: HTTP
+            initialDelaySeconds: 15
+            timeoutSeconds: 2
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: web-http
+              scheme: HTTP
+            initialDelaySeconds: 15
+            timeoutSeconds: 2
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 5
+          env:
+          - name: ZBX_SERVER_NAME
+            value: "Zabbix kubernetes"
+          - name: PHP_TZ
+            value: "{{ .Values.web.timezone }}"
+          {{- if eq .Values.zabbix.database.type "mysql" }}
+          - name: MYSQL_USER
+            valueFrom:
+             secretKeyRef:
+              name: server-db-secret
+              key: db-zbx-user
+          - name: MYSQL_PASSWORD
+            valueFrom:
+             secretKeyRef:
+              name: server-db-secret
+              key: db-zbx-pass
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+             secretKeyRef:
+              name: server-db-secret
+              key: db-root-pass
+          - name: MYSQL_DATABASE
+            value: "{{ .Values.zabbix.database.name }}"
+          {{- end }}
+          {{- if eq .Values.zabbix.database.type "pgsql" }}
+          - name: POSTGRES_USER
+            valueFrom:
+             secretKeyRef:
+              name: server-db-secret
+              key: db-zbx-user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+             secretKeyRef:
+              name: server-db-secret
+              key: db-zbx-pass
+          - name: POSTGRES_PASSWORD_FILE
+            valueFrom:
+             secretKeyRef:
+              name: server-db-secret
+              key: db-root-pass
+          - name: POSTGRES_DB
+            value: "{{ .Values.zabbix.database.name }}"
+          {{- end }}
+          - name: DB_SERVER_HOST
+          {{- if .Values.server.database.host }}
+            value: "{{ .Values.server.database.host }}"
+          {{- else }}
+            value: "{{ .Values.zabbix.database.host }}"
+          {{- end }}
+          volumeMounts:
+          - name: zabbix-web-ssl
+            mountPath: /etc/ssl/nginx
+            readOnly: true
+      volumes:
+       - hostPath:
+          path: /home/dotneft/zbx/zbx_env/etc/ssl/nginx/
+         name: zabbix-web-ssl
+{{- end }}
