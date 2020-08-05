@@ -1,11 +1,11 @@
-name: CI
+name: ci
 on:
   pull_request:
     branches:
     - main
 
 jobs:
-  CI:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
