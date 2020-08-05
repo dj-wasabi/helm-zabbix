@@ -1,9 +1,12 @@
-name: ci-helm
-on: [push, pull_request]
+name: CI
+on:
+  pull_request:
+    branches:
+    - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-18.04
+  lint:
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
