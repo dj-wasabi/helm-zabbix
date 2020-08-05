@@ -6,7 +6,6 @@ metadata:
   labels:
     app: zabbix
     tier: agent
-  namespace: zabbix
 spec:
   updateStrategy:
    type: RollingUpdate
@@ -23,7 +22,7 @@ spec:
     spec:
       containers:
         - name: zabbix-agent
-          image: "zabbix/zabbix-agent:alpine-{{ .Values.server.version }}"
+          image: "zabbix/zabbix-agent:alpine-{{ if .Values.agent.version }}{{ .Values.agent.version }}{{- else }}{{ .Values.zabbix.version }}{{- end }}"
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           resources:
            limits:
@@ -37,7 +36,11 @@ spec:
             name: zabbix-agent
           env:
           - name: ZBX_SERVER_HOST
+          {{- if .Values.agent.server.host }}
             value: "{{ .Values.agent.server.host }}"
+          {{- else }}
+            value: "zabbix-server.{{ .Release.Namespace }}.svc"
+          {{- end }}
           - name: ZBX_PASSIVE_ALLOW
             value: "{{ .Values.agent.passiveagent }}"
           - name: ZBX_STARTAGENTS

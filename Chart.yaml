@@ -1,6 +1,7 @@
 apiVersion: v2
 name: helm-zabbix
 description: A Helm chart for deploying Zabbix
+icon: https://assets.zabbix.com/img/logo/zabbix_logo_500x131.png
 
 type: application
 version: 0.1.0

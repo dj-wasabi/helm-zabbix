@@ -1,1 +1,19 @@
-1. Get the application URL by running these commands:
+
+The following Zabbix components are installed:
+{{ if .Values.agent.enabled -}}
+* Zabbix Agent
+{{- end }}
+{{ if .Values.server.enabled -}}
+* Zabbix Server
+{{- end }}
+{{ if .Values.web.enabled -}}
+* Zabbix Web
+{{- end }}
+{{ if .Values.ingress.enabled -}}
+{{- range .Values.ingress.hosts }}
+Zabbix web interface available on: {{ .host | quote }}
+
+Username: Admin
+Password: zabbix
+{{- end }}
+{{- end }}
