@@ -190,3 +190,4 @@ proxy.database.host|The host of the database (Is overriding the `zabbix.database
 
 Parameter | Description | Default
 --------- | ----------- | -------
+javagateway.enabled|If the Zabbix Java Gateway needs to be deployed or not.|`false`
