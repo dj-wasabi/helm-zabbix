@@ -1,16 +1,9 @@
-name: HELM
-on:
-  push:
-    paths:
-      - '**'
-  pull_request:
-    paths:
-      - '**'
+name: ci-helm
+on: [push, pull_request]
+
 jobs:
   molecule:
     runs-on: ubuntu-18.04
-    strategy:
-      fail-fast: false
     steps:
       - name: Check out code
         uses: actions/checkout@v1
