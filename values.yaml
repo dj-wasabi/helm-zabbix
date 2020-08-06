@@ -3,14 +3,29 @@
 image:
   pullPolicy: Always
 
-server:
+ingress:
   enabled: true
-  type: mysql
-  version: 5.0-latest
+  annotations: {}
+  hosts:
+    - host: www.example.com
+      secretName: www.example.com
+      paths:
+        - "/"
+  # tls:
+  #   - hosts:
+  #     - www.example.com
+  #     secretName: www.example.com
 
+zabbix:
+  version: 5.0-latest
   database:
+    type: mysql
     name: zabbix
     host: mysql-8.default.svc.cluster.local
+
+server:
+  enabled: true
+  database: {}
 
   javagateway:
     enable: true
@@ -21,11 +36,14 @@ server:
   externalIPs: []
   env: {}
 
+web:
+  enabled: true
+  timezone: Europe/Riga
+
 agent:
   enabled: true
-  version: 5.0-latest
-  server:
-    host: zabbix-server.zabbix.svc
+  # version: 4.4-latest
+  server: {}
   timeout: 10
   startagents: 3
   passiveagent: true
