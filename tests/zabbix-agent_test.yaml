@@ -1,0 +1,26 @@
+suite: test zabbix-agent
+templates:
+  - zabbix-agent.yaml
+tests:
+  - it: should work
+    values:
+      - ./values/zabbix-agent.yaml
+    asserts:
+      - isKind:
+          of: DaemonSet
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: IfNotPresent
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.privileged
+          value: true
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.runAsUser
+          value: 1997
+      - equal:
+          path: spec.template.spec.containers[0].env[0].value
+          value: zabbix-server.my.name
+      - isNotNull:
+          path: spec.template.spec.containers[0].volumeMounts
+      - isNotNull:
+          path: spec.template.spec.volumes

@@ -52,5 +52,47 @@ spec:
             value: {{ $value | quote }}
           {{- end }}
           securityContext:
-            privileged: true
+            privileged: {{ .Values.agent.securityContext.privileged }}
+            runAsUser: {{ .Values.agent.securityContext.runAsUser }}
+          {{- if or .Values.agent.volumes_host (gt (len .Values.agent.volumes) 0) }}
+          volumeMounts:
+          {{- end }}
+          {{- if .Values.agent.volumes_host }}
+            - name: hostfs-root-volume
+              mountPath: /hostfs
+            - name: hostfs-etc-volume
+              mountPath: /hostfs/etc
+            - name: hostfs-sys-volume
+              mountPath: /hostfs/sys
+            - name: hostfs-proc-volume
+              mountPath: /proc
+            - name: host-var-run-volume
+              mountPath: /var/run
+          {{- end }}
+          {{- if .Values.agent.volumeMounts }}
+            {{- toYaml .Values.agent.volumeMounts | nindent 12 }}
+          {{- end }}
+      {{- if or .Values.agent.volumes_host (gt (len .Values.agent.volumes) 0) }}
+      volumes:
+      {{- end }}
+      {{- if .Values.agent.volumes_host }}
+        - name: hostfs-root-volume
+          hostPath:
+            path: /
+        - name: hostfs-etc-volume
+          hostPath:
+            path: /etc
+        - name: hostfs-proc-volume
+          hostPath:
+            path: /proc
+        - name: hostfs-sys-volume
+          hostPath:
+            path: /sys
+        - name: host-var-run-volume
+          hostPath:
+            path: /var/run
+      {{- end }}
+      {{- if .Values.agent.volumes }}
+        {{- toYaml .Values.agent.volumes | nindent 8 }}
+      {{- end }}
 {{- end }}
