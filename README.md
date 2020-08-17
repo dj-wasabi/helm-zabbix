@@ -15,23 +15,26 @@ Table of content:
   * [Zabbix Server](#zabbix-server)
   * [Zabbix Web](#zabbix-web)
   * [Zabbix Agent](#zabbix-agent)
+    + [agent.volumes_host](#-agentvolumes-host-)
+    + [agent.volumes](#-agentvolumes)
   * [Zabbix Proxy](#zabbix-proxy)
   * [Zabbix JavaGateway](#zabbix-javagateway)
 
 [WIP] Work in Progress (I've started a puppet module (owned by vox-populi now), have created several Ansible roles (Now part of the collection.zabbix) so why not starting a HELM Chart for Zabbix.)
 
-This HELM Chart will install (all|some) of the Zabbix components onto a Kubernetes environment. This is based on this https://github.com/zabbix/zabbix-docker/blob/5.0/kubernetes.yaml file.
+This HELM Chart will install (all|some) of the Zabbix components onto a Kubernetes environment. This HELM Chart is based on the work Zabbix already did and can be found https://github.com/zabbix/zabbix-docker/blob/5.0/kubernetes.yaml .
 
 ## Prerequisites
 
-* Kubernetes 1.10+
-* Helm 3.0
+* Kubernetes 1.10+;
+* Helm 3.0;
+* The need for deploying Zabbix.
 
 ## Dependencies
 
-This HELM Chart will only install the Zabbix specific components and it will not install any database instance. Before deploying this HELM Chart, please make sure you have either MySQL or PgSQL installed and running.
+This HELM Chart will only install the Zabbix specific components and it will not install any database instance. Before deploying this HELM Chart, please make sure you have either `MySQL` or `PgSQL` installed and running.
 
-There is no need for running MySQL or PgSQL in the same Kubernetes environment that you want to use for running the Zabbix components. This can also be a (Physical) host or some cloud related instance like AWS RDS.
+There is no need for running `MySQL` or `PgSQL` in the same Kubernetes environment that you want to use for running the Zabbix components. This can also be a (Physical) host or some cloud related instance like AWS RDS.
 
 # Installation
 
@@ -141,53 +144,76 @@ The next few paragraphs provides an overview of all available options you can co
 
 Parameter | Description | Default
 --------- | ----------- | -------
-zabbix.database.type|The type of database to be used.| `mysql`
+`zabbix.version`|The version to be deployed.| `5.0-latest`
+`zabbix.database.type`|The type of database to be used.|`mysql`
+`zabbix.database.name`|The name of the database.| `zabbix`
+`zabbix.database.host`|The host of the database.| `zabbix`
 
 ## Zabbix Server
 
 Parameter | Description | Default
 --------- | ----------- | -------
-server.enabled |If the Zabbix Server needs to be deployed or not. | `true`
-server.version|The version of the Zabbix Server.| `5.0-latest`
-server.database.type|The type of database to be used (Is overriding the `zabbix.database.type`).| `mysql`
-server.database.name|The name of the database (Is overriding the `zabbix.database.name`).| `zabbix`
-server.database.host|The host of the database (Is overriding the `zabbix.database.host`).| `zabbix`
-server.javagateway.enable| If the JavaGateway needs to be enabled.| `true`
-server.javagateway.javapollers|The amount of pollers for the JavaGateway| `5`
-server.externalIPs|A list with IPs of outside Kubernetes to access the server| `[]`
-server.env|A dict for adding environment variables| `{}`
+`server.enabled` |If the Zabbix Server needs to be deployed or not. | `true`
+`server.version`|The version of the Zabbix Server.| `5.0-latest`
+`server.database.type`|The type of database to be used (Is overriding the `zabbix.database.type`).|`mysql`
+`server.database.name`|The name of the database (Is overriding the `zabbix.database.name`).| `zabbix`
+`server.database.host`|The host of the database (Is overriding the `zabbix.database.host`).| `zabbix`
+`server.javagateway.enable`| If the JavaGateway needs to be enabled.| `true`
+`server.javagateway.javapollers`|The amount of pollers for the JavaGateway| `5`
+`server.externalIPs`|A list with IPs of outside Kubernetes to access the server| `[]`
+`server.env`|A dict for adding environment variables| `{}`
 
 ## Zabbix Web
 
 Parameter | Description | Default
 --------- | ----------- | -------
-ingress.enabed|If Ingress needs to be enabled.| `false`
-ingress.annotations| Add additional annotations to configure the Ingress.| `{}`
-ingress.hosts|Add FQDN/path configuration to te Ingress.| `{}`
-
+`ingress.enabed`|If Ingress needs to be enabled.| `false`
+`ingress.annotations`| Add additional annotations to configure the Ingress.| `{}`
+`ingress.hosts`|Add FQDN/path configuration to te Ingress.| `{}`
 
 ## Zabbix Agent
 
 Parameter | Description | Default
 --------- | ----------- | -------
-agent.enabled|If the Zabbix Agent needs to be deployed or not.|`true`
-agent.version|The version of the Zabbix Agent.| `5.0-latest`
-agent.server.host|.The FQDN on which the Zabbix Server is available.|`zabbix-server.zabbix.svc`
-agent.timeout|The timeout of the Zabbix Agent.|`10`
-agent.startagents|The amount of agents to start.|`3`
-agent.passiveagent: |If we need to allow passive checks.|`true`
+`agent.enabled`|If the Zabbix Agent needs to be deployed or not.|`true`
+`agent.version`|The version of the Zabbix Agent.| `5.0-latest`
+`agent.server.host`|.The FQDN on which the Zabbix Server is available.|`zabbix-server.zabbix.svc`
+`agent.timeout`|The timeout of the Zabbix Agent.|`10`
+`agent.startagents`|The amount of agents to start.|`3`
+`agent.passiveagent`|If we need to allow passive checks.|`true`
+`agent.securityContext.privileged`|If you need to run the agent as a privileged Docker container.|`true`
+`agent.securityContext.runAsUser`: |The UID of the user inside the Docker image.|`true`
+`agent.volumes_host`|If a preconfigured set of volumes to be mounted (`/`, `/etc`, `/sys`, `/proc`, `/var/run`).|`true`
+`agent.volumes`|Add additional volumes to be mounted.| `[]`
+`agent.volumeMounts`|Add additional volumes to be mounted.| `[]`
+
+### `agent.volumes_host`
+
+The following directories will be mounted from the host, inside the pod:
+
+Host | Pod |
+---- | ----
+`/` | `/hostfs`
+`/etc` | `/hostfs/etc`
+`/sys` | `/hostfs/sys`
+`/proc` | `/hostfs/proc`
+`/var/run` | `/var/run`
+
+### `agent.volumes`
+
+The following will provide an overview on how to add additional volumes.
 
 ## Zabbix Proxy
 
 Parameter | Description | Default
 --------- | ----------- | -------
-proxy.enabled|If the Zabbix Proxy needs to be deployed or not.|`false`
-proxy.database.type|The type of database to be used (Is overriding the `zabbix.database.type`).| `mysql`
-proxy.database.name|The name of the database (Is overriding the `zabbix.database.name`).| `zabbix`
-proxy.database.host|The host of the database (Is overriding the `zabbix.database.host`).| `zabbix`
+`proxy.enabled`|If the Zabbix Proxy needs to be deployed or not.|`false`
+`proxy.database.type`|The type of database to be used (Is overriding the `zabbix.database.type`).| `mysql`
+`proxy.database.name`|The name of the database (Is overriding the `zabbix.database.name`).| `zabbix`
+`proxy.database.host`|The host of the database (Is overriding the `zabbix.database.host`).| `zabbix`
 
 ## Zabbix JavaGateway
 
 Parameter | Description | Default
 --------- | ----------- | -------
-javagateway.enabled|If the Zabbix Java Gateway needs to be deployed or not.|`false`
+`javagateway.enabled`|If the Zabbix Java Gateway needs to be deployed or not.|`false`

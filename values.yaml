@@ -1,7 +1,7 @@
 # Default values for helm-zabbix.
 
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 ingress:
   enabled: true
@@ -42,8 +42,14 @@ web:
 
 agent:
   enabled: true
-  # version: 4.4-latest
-  server: {}
+  securityContext:
+    privileged: true
+    runAsUser: 1997
+  server:
+    host: ""
   timeout: 10
   startagents: 3
   passiveagent: true
+  volumes_host: true
+  volumes: []
+  volumeMounts: []
