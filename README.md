@@ -1,5 +1,10 @@
 # HELM-ZABBIX
 
+![CI](https://github.com/dj-wasabi/helm-zabbix/workflows/CI/badge.svg)
+[![GitHub tag](https://img.shields.io/github/tag/Naereen/StrapDown.js.svg)](https://github.com/dj-wasabi/helm-zabbix/tags/)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+
+
 Table of content:
 
 - [HELM-ZABBIX](#helm-zabbix)
@@ -66,9 +71,9 @@ db-root-pass|The (MySQL or PgSQL) password for the `ROOT` or `postgres` user.
 
 ## www.example.com
 
-When you set `ingress.enabled` to `true`, you will have access to the Zabbix Web interface. But if you want to use TLS certificates, we need to create a 2nd secret.
+When you set `ingress.enabled` to `true`, you will have access to the Zabbix Web interface via the Ingress Controller. But if you want to use TLS certificates, we need to create a 2nd secret which contains the TLS information.
 
-This secret contains the `key` and `crt` that we need to provide to the Ingress Controller. But first, we need to make sure we have a `crt` and `key` file. The following provides an example command to self generate a TLS certificate. Please do not do this in production, use properly signed certificates for this. For demonstration purposes, this would be fine.
+This secret contains the `key` and `crt` that we need to provide to the Ingress Controller. But first, we need to make sure we have a `crt` and `key` file. The following provides an example command to generate an self signed TLS certificate. Please do not do this in production, use properly signed certificates for this. For demonstration purposes, this would be fine.
 
 ```bash
 openssl req -x509 \
@@ -90,7 +95,7 @@ kubectl create secret tls -n zabbix www.example.com \
   --cert="www.example.com.crt"
 ```
 
-In the above configuration, we create a secret named `www.example.com`. Please change this as well to either your FQDN or something that you know that it is related to the earlier mentioned FQDN.
+In the above command, we create a secret named `www.example.com` in the `zabbix` namespace. Please change the name and/or files as well to either your FQDN or something that you know that it is related to the earlier mentioned FQDN.
 
 We need to create an `zabbix-override.yaml` file containing the following ingress configuration.
 ```yaml
@@ -108,11 +113,11 @@ ingress:
       secretName: www.example.com
 ```
 
-We need to update the `www.example.com` with the actual FQDN and the secret name that you used in the previous commands.
+We need to update the `www.example.com` with the actual FQDN or name you have for the secret name that you created in the previous command.
 
 ## proxy-db-secret
 
-This secret `server-db-secret` contains the username/passwords for accessing the database used by the `Zabbix Proxy`. Please check [dependencies](#dependencies) and make sure you have either a `MySQL` or a `PgSQL` running.
+This secret `server-db-secret` contains the username/passwords for accessing the database used by the `Zabbix Proxy`. If you don't need to deploy the Proxy (Zabbix Proxy is disabled default), you can skip this step. Please check [dependencies](#dependencies) and make sure you have either a `MySQL` or a `PgSQL` running.
 
 Once you have that running, please create the following secret:
 ```
@@ -142,6 +147,8 @@ The next few paragraphs provides an overview of all available options you can co
 
 ## Zabbix overal
 
+The following provides an overview of the settings that can be used for all components. When setting these, you won't have to set them specifically for each component.
+
 Parameter | Description | Default
 --------- | ----------- | -------
 `zabbix.version`|The version to be deployed.| `5.0-latest`
@@ -162,7 +169,7 @@ Parameter | Description | Default
 `server.externalIPs`|A list with IPs of outside Kubernetes to access the server| `[]`
 `server.env`|A dict for adding environment variables| `{}`
 `server.securityContext.privileged`|If you need to run the agent as a privileged Docker container.|`false`
-`server.securityContext.runAsUser`: |The UID of the user inside the Docker image.|`true`
+`server.securityContext.runAsUser` |The UID of the user inside the Docker image.|`1997`
 `server.volumes`|Add additional volumes to be mounted.| `[]`
 `server.volumeMounts`|Add additional volumes to be mounted.| `[]`
 
@@ -188,7 +195,7 @@ Parameter | Description | Default
 `agent.startagents`|The amount of agents to start.|`3`
 `agent.passiveagent`|If we need to allow passive checks.|`true`
 `agent.securityContext.privileged`|If you need to run the agent as a privileged Docker container.|`true`
-`agent.securityContext.runAsUser`: |The UID of the user inside the Docker image.|`true`
+`agent.securityContext.runAsUser` |The UID of the user inside the Docker image.|`1997`
 `agent.volumes_host`|If a preconfigured set of volumes to be mounted (`/`, `/etc`, `/sys`, `/proc`, `/var/run`).|`true`
 `agent.volumes`|Add additional volumes to be mounted.| `[]`
 `agent.volumeMounts`|Add additional volumes to be mounted.| `[]`
