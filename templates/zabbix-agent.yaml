@@ -22,7 +22,11 @@ spec:
     spec:
       containers:
         - name: zabbix-agent
+          {{ if .Values.agent.image }}
+          image: "{{ .Values.agent.image }}"
+          {{ else }}
           image: "zabbix/zabbix-agent:alpine-{{ if .Values.agent.version }}{{ .Values.agent.version }}{{- else }}{{ .Values.zabbix.version }}{{- end }}"
+          {{- end }}
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           resources:
            limits:
