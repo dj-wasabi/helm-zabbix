@@ -17,7 +17,11 @@ spec:
     spec:
       containers:
         - name: zabbix-server
+          {{ if .Values.server.image }}
+          image: "{{ .Values.server.image }}"
+          {{ else }}
           image: "zabbix/zabbix-server-{{ .Values.zabbix.database.type }}:alpine-{{ if .Values.server.version }}{{ .Values.server.version }}{{- else }}{{ .Values.zabbix.version }}{{- end }}"
+          {{- end }}
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           ports:
           - containerPort: 10051
@@ -78,27 +82,23 @@ spec:
           {{- else }}
             value: "{{ .Values.zabbix.database.host }}"
           {{- end }}
-          - name: ZBX_JAVAGATEWAY_ENABLE
-            value: "'{{ .Values.server.javagateway.enable | default "true" }}'"
-          - name: ZBX_STARTJAVAPOLLERS
-            value: "'{{ .Values.server.javagateway.javapollers | default "5" }}'"
-          {{- if .Values.server.snmptraps }}
-          - name: ZBX_ENABLE_SNMP_TRAPS
-            value: "true"
-          {{- end }}
-          - name: ZBX_STARTPROXYPOLLERS
-            value: "5"
-          - name: ZBX_PROXYCONFIGFREQUENCY
-            value: "60"
           {{- range $key, $value := .Values.server.env }}
           - name: {{ $key }}
             value: {{ $value | quote }}
           {{- end }}
-          {{- if .Values.server.snmptraps }}
+          securityContext:
+            privileged: {{ .Values.server.securityContext.privileged }}
+            runAsUser: {{ .Values.server.securityContext.runAsUser }}
+          {{- if or .Values.server.snmptraps (gt (len .Values.server.volumes) 0) }}
           volumeMounts:
+          {{- end }}
+          {{- if .Values.server.snmptraps }}
           - name: zabbix-db-storage
             mountPath: /var/lib/zabbix/snmptraps/
             readOnly: true
+          {{- end }}
+          {{- if .Values.server.volumeMounts }}
+            {{- toYaml .Values.server.volumeMounts | nindent 12 }}
           {{- end }}
         {{- if .Values.server.snmptraps }}
         - name: zabbix-snmptraps
@@ -113,8 +113,10 @@ spec:
             mountPath: /var/lib/zabbix/snmptraps/
             readOnly: false
         {{- end }}
-      {{- if .Values.server.snmptraps }}
+      {{- if or .Values.server.snmptraps (gt (len .Values.server.volumes) 0) }}
       volumes:
+      {{- end }}
+      {{- if .Values.server.snmptraps }}
        - hostPath:
           path: /zabbix/
          name: zabbix-db-storage

@@ -1,19 +1,14 @@
-suite: test zabbix-agent
+suite: test zabbix-server
 templates:
-  - zabbix-agent.yaml
+  - zabbix-server.yaml
 tests:
   - it: should work
-    values:
-      - ./values/zabbix-agent.yaml
     asserts:
       - isKind:
-          of: DaemonSet
+          of: Deployment
       - equal:
           path: spec.template.spec.containers[0].image
-          value: "this-is-my/zabbix:awesome"
-      - notEqual:
-          path: spec.template.spec.containers[0].image
-          value: "zabbix/zabbix-agent:alpine-5.0-latest"
+          value: "zabbix/zabbix-server-mysql:alpine-5.0-latest"
       - equal:
           path: spec.template.spec.containers[0].imagePullPolicy
           value: IfNotPresent
@@ -24,8 +19,8 @@ tests:
           path: spec.template.spec.containers[0].securityContext.runAsUser
           value: 1997
       - equal:
-          path: spec.template.spec.containers[0].env[0].value
-          value: zabbix-server.my.name
+          path: spec.template.spec.containers[0].env[0].name
+          value: MYSQL_USER
       - isNotNull:
           path: spec.template.spec.containers[0].volumeMounts
       - isNotNull:

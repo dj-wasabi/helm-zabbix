@@ -1,0 +1,22 @@
+suite: test zabbix-server service
+templates:
+  - zabbix-server.service.yaml
+tests:
+  - it: should pass
+    set:
+        server.snmptraps.enabled: false
+    release:
+      name: my-release
+    asserts:
+      - contains:
+          path: spec.ports
+          content:
+            port: 10051
+            targetPort: 10051
+            protocol: TCP
+            name: zabbix-trapper
+
+      - equal:
+          path: spec.selector
+          value:
+            name: zabbix-server
