@@ -17,8 +17,12 @@ spec:
     spec:
       containers:
         - name: zabbix-web
-          image: zabbix/zabbix-web-nginx-{{ .Values.zabbix.database.type }}:alpine-{{ if .Values.web.version }}{{ .Values.web.version }}{{- else }}{{ .Values.zabbix.version }}{{- end }}
-          imagePullPolicy: Always
+          {{ if .Values.web.image }}
+          image: "{{ .Values.web.image }}"
+          {{ else }}
+          image: zabbix/zabbix-web-{{ .Values.web.webserver }}-{{ .Values.zabbix.database.type }}:alpine-{{ if .Values.web.version }}{{ .Values.web.version }}{{- else }}{{ .Values.zabbix.version }}{{- end }}
+          {{- end }}
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           ports:
           - containerPort: 8080
             name: web-http
@@ -100,6 +104,9 @@ spec:
           {{- else }}
             value: "{{ .Values.zabbix.database.host }}"
           {{- end }}
+          securityContext:
+            privileged: {{ .Values.web.securityContext.privileged }}
+            runAsUser: {{ .Values.web.securityContext.runAsUser }}
           volumeMounts:
           - name: zabbix-web-ssl
             mountPath: /etc/ssl/nginx

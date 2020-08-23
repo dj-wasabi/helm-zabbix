@@ -1,5 +1,6 @@
 ---
 
 agent:
+  image: "this-is-my/zabbix:awesome"
   server:
     host: zabbix-server.my.name

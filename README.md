@@ -153,20 +153,25 @@ Parameter | Description | Default
 
 Parameter | Description | Default
 --------- | ----------- | -------
+`server.image` |If you want to override the default official Zabbix image. This should also contain the appropriate tag. | `None`
 `server.enabled` |If the Zabbix Server needs to be deployed or not. | `true`
 `server.version`|The version of the Zabbix Server.| `5.0-latest`
 `server.database.type`|The type of database to be used (Is overriding the `zabbix.database.type`).|`mysql`
 `server.database.name`|The name of the database (Is overriding the `zabbix.database.name`).| `zabbix`
 `server.database.host`|The host of the database (Is overriding the `zabbix.database.host`).| `zabbix`
-`server.javagateway.enable`| If the JavaGateway needs to be enabled.| `true`
-`server.javagateway.javapollers`|The amount of pollers for the JavaGateway| `5`
 `server.externalIPs`|A list with IPs of outside Kubernetes to access the server| `[]`
 `server.env`|A dict for adding environment variables| `{}`
+`server.securityContext.privileged`|If you need to run the agent as a privileged Docker container.|`false`
+`server.securityContext.runAsUser`: |The UID of the user inside the Docker image.|`true`
+`server.volumes`|Add additional volumes to be mounted.| `[]`
+`server.volumeMounts`|Add additional volumes to be mounted.| `[]`
 
 ## Zabbix Web
 
 Parameter | Description | Default
 --------- | ----------- | -------
+`web.image` |If you want to override the default official Zabbix image. This should also contain the appropriate tag. | `None`
+`web.webserver`|What kind of webserver do you want to use: `nginx` or `apache`.| `nginx`
 `ingress.enabed`|If Ingress needs to be enabled.| `false`
 `ingress.annotations`| Add additional annotations to configure the Ingress.| `{}`
 `ingress.hosts`|Add FQDN/path configuration to te Ingress.| `{}`
@@ -175,6 +180,7 @@ Parameter | Description | Default
 
 Parameter | Description | Default
 --------- | ----------- | -------
+`image.image` |If you want to override the default official Zabbix image. This should also contain the appropriate tag. | `None`
 `agent.enabled`|If the Zabbix Agent needs to be deployed or not.|`true`
 `agent.version`|The version of the Zabbix Agent.| `5.0-latest`
 `agent.server.host`|.The FQDN on which the Zabbix Server is available.|`zabbix-server.zabbix.svc`
