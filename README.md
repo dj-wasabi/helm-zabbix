@@ -1,7 +1,7 @@
 # HELM-ZABBIX
 
 ![CI](https://github.com/dj-wasabi/helm-zabbix/workflows/CI/badge.svg)
-[![GitHub tag](https://img.shields.io/github/tag/Naereen/StrapDown.js.svg)](https://github.com/dj-wasabi/helm-zabbix/tags/)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/dj-wasabi/helm-zabbix)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 
 
