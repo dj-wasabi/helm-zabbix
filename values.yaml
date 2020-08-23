@@ -26,19 +26,24 @@ zabbix:
 server:
   enabled: true
   database: {}
-
-  javagateway:
-    enable: true
-    javapollers: 5
+  securityContext:
+    privileged: true
+    runAsUser: 1997
 
   snmptraps:
     enabled: true
   externalIPs: []
   env: {}
+  volumes: []
+  volumeMounts: []
 
 web:
   enabled: true
+  webserver: nginx
   timezone: Europe/Riga
+  securityContext:
+    privileged: true
+    runAsUser: 1997
 
 agent:
   enabled: true
