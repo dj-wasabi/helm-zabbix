@@ -1,6 +1,7 @@
 # HELM-ZABBIX
 
 ![CI](https://github.com/dj-wasabi/helm-zabbix/workflows/CI/badge.svg)
+![GitHub Release Date](https://img.shields.io/github/release-date/dj-wasabi/helm-zabbix)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dj-wasabi/helm-zabbix)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 
