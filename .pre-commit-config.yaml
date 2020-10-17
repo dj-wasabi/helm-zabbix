@@ -1,0 +1,8 @@
+---
+repos:
+- repo: https://github.com/dj-wasabi/pre-commit-hooks
+  rev: d84bb1806ddb7572f38e80a8778f6d13540554d9
+  hooks:
+    - id: helm-lint
+    - id: helm-unittest
+
