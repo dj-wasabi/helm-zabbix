@@ -15,4 +15,4 @@ spec:
     targetPort: 8443
     name: web-https
   selector:
-    name: zabbix-web
+    app: zabbix-web
