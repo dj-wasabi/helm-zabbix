@@ -19,4 +19,4 @@ tests:
       - equal:
           path: spec.selector
           value:
-            name: zabbix-server
+            app: zabbix-server

@@ -19,7 +19,7 @@ spec:
     name: snmp-trap
   {{- end }}
   selector:
-    name: zabbix-server
+    app: zabbix-server
 {{- if .Values.server.externalIPs }}
   externalIPs:
   {{- toYaml .Values.server.externalIPs | nindent 8 }}
