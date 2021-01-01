@@ -1,23 +1,21 @@
 # Changelog
 
+## [0.0.3](https://github.com/dj-wasabi/helm-zabbix/tree/0.0.3) (2020-12-30)
+
+[Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.0.2...0.0.3)
+
+**Merged pull requests:**
+
+- modified selector to the correct label [\#7](https://github.com/dj-wasabi/helm-zabbix/pull/7) ([shk3bq4d](https://github.com/shk3bq4d))
+- modified the selector to the correct label [\#6](https://github.com/dj-wasabi/helm-zabbix/pull/6) ([dkanbier](https://github.com/dkanbier))
+
 ## [0.0.2](https://github.com/dj-wasabi/helm-zabbix/tree/0.0.2) (2020-10-17)
 
 [Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.0.1...0.0.2)
 
-**Merged pull requests:**
-
-- Added precommit hooks [\#5](https://github.com/dj-wasabi/helm-zabbix/pull/5) ([dj-wasabi](https://github.com/dj-wasabi))
-
 ## [0.0.1](https://github.com/dj-wasabi/helm-zabbix/tree/0.0.1) (2020-08-23)
 
-[Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/eb459b5405f46a6396847147428d8ce8dccf5da8...0.0.1)
-
-**Merged pull requests:**
-
-- Added some more tests [\#4](https://github.com/dj-wasabi/helm-zabbix/pull/4) ([dj-wasabi](https://github.com/dj-wasabi))
-- Added some tests [\#3](https://github.com/dj-wasabi/helm-zabbix/pull/3) ([dj-wasabi](https://github.com/dj-wasabi))
-- Create blank.yml [\#2](https://github.com/dj-wasabi/helm-zabbix/pull/2) ([dj-wasabi](https://github.com/dj-wasabi))
-- Using a deployment, added/moved some properties [\#1](https://github.com/dj-wasabi/helm-zabbix/pull/1) ([dj-wasabi](https://github.com/dj-wasabi))
+[Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/af5305f35b8119976441ffb51dcfebd66ed67df9...0.0.1)
 
 
 
