@@ -9,7 +9,10 @@ cd main
 ../dj-wasabi-release/release.sh -d
 
 
-git config --get remote.origin.url
+GITHUB_URL=$(git config --get remote.origin.url)
+GITHUB_USER=$(echo "${GITHUB_URL}" | awk -F ':' '{print $2}' | awk -F '/' '{print $1}')
+GITHUB_PROJECT=$(echo "${GITHUB_URL}" | xargs basename | sed 's/.git//g')
+
 
 # Let commit the changes if there are any? (Well there should be!)
 if [[ $(git status | grep -c 'CHANGELOG.md' || true) -gt 0 ]]
