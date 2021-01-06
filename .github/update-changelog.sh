@@ -5,12 +5,8 @@ set -x
 # repository is the 'dj-wasabi-release' next to 'main'
 cd main
 
-# Debug
-grep 'getGithubUser' ../dj-wasabi-release/release.sh
-
 # Generate CHANGELOG.md file
 ../dj-wasabi-release/release.sh -d
-
 
 # Let commit the changes if there are any? (Well there should be!)
 if [[ $(git status | grep -c 'CHANGELOG.md' || true) -gt 0 ]]
