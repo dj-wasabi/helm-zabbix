@@ -29,17 +29,16 @@ jobs:
       - name: Commit Changelog file
         run: |
           cd main
-          pwd
-          ls -l
           ../dj-wasabi-release/release.sh -d
+          git status
           if [[ $(git status | grep modified | wc -l) -ge 1 ]]
             then  echo "Committing file"
-            git config --global user.name "Werner Dijkerman [GH bot]"
-            git config --global user.email "github@dj-wasabi.nl"
+                  git config --global user.name 'Werner Dijkerman [GH bot]'
+                  git config --global user.email 'github@dj-wasabi.nl'
 
-            git add CHANGELOG.md
-            git commit -m "Updated CHANGELOG on \"$(date "+%Y-%m-%d %H:%M:%S")\"" CHANGELOG.md
-            git push
+                  git add CHANGELOG.md
+                  git commit -m "Updated CHANGELOG" CHANGELOG.md
+                  # git push
           fi
         env:
           CHANGELOG_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
