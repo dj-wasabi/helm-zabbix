@@ -27,18 +27,6 @@ jobs:
           path: dj-wasabi-release
 
       - name: Commit Changelog file
-        run: |
-          cd main
-          ../dj-wasabi-release/release.sh -d
-          git status
-          if [[ $(git status | grep modified | wc -l) -ge 1 ]]
-            then  echo "Committing file"
-                  git config --global user.name 'Werner Dijkerman [GH bot]'
-                  git config --global user.email 'github@dj-wasabi.nl'
-
-                  git add CHANGELOG.md
-                  git commit -m "Updated CHANGELOG" CHANGELOG.md
-                  # git push
-          fi
+        run: main/.github/update-changelog.sh
         env:
           CHANGELOG_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
