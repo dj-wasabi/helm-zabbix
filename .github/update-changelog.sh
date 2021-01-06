@@ -5,13 +5,11 @@ set -x
 # repository is the 'dj-wasabi-release' next to 'main'
 cd main
 
+# Debug
+grep 'getGithubUser' ../dj-wasabi-release/release.sh
+
 # Generate CHANGELOG.md file
 ../dj-wasabi-release/release.sh -d
-
-
-GITHUB_URL=$(git config --get remote.origin.url)
-GITHUB_USER=$(echo "${GITHUB_URL}" | awk -F ':' '{print $2}' | awk -F '/' '{print $1}')
-GITHUB_PROJECT=$(echo "${GITHUB_URL}" | xargs basename | sed 's/.git//g')
 
 
 # Let commit the changes if there are any? (Well there should be!)
