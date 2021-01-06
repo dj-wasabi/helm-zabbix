@@ -1,10 +1,18 @@
 # Changelog
 
+## [Unreleased](https://github.com/dj-wasabi/helm-zabbix/tree/HEAD)
+
+[Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.0.3...HEAD)
+
+**Implemented enhancements:**
+
+- Added new action [\#8](https://github.com/dj-wasabi/helm-zabbix/pull/8) ([dj-wasabi](https://github.com/dj-wasabi))
+
 ## [0.0.3](https://github.com/dj-wasabi/helm-zabbix/tree/0.0.3) (2020-12-30)
 
 [Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.0.2...0.0.3)
 
-**Merged pull requests:**
+**Fixed bugs:**
 
 - modified selector to the correct label [\#7](https://github.com/dj-wasabi/helm-zabbix/pull/7) ([shk3bq4d](https://github.com/shk3bq4d))
 - modified the selector to the correct label [\#6](https://github.com/dj-wasabi/helm-zabbix/pull/6) ([dkanbier](https://github.com/dkanbier))
