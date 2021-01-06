@@ -10,6 +10,9 @@ cd main
 
 # Let commit the changes
 git status
+
+git rev-parse --abbrev-ref HEAD
+
 if [[ $(git status | grep modified | wc -l) -ge 1 ]]
   then  echo "Committing file"
         git config --global user.name 'Werner Dijkerman [GH bot]'
