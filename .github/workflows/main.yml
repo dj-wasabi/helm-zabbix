@@ -15,17 +15,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout current repo
+        uses: actions/checkout@v2
+        with:
+          path: main
 
       - name: Checkout dj-wasabi-release repo
         uses: actions/checkout@v2
         with:
           repository: dj-wasabi/dj-wasabi-release
-          path: /tmp/dj-wasabi-release
+          path: dj-wasabi-release
 
       - name: Commit Changelog file
         run: |
-          /tmp/dj-wasabi-release/release.sh -d
+          cd main
+          pwd
+          ..//dj-wasabi-release/release.sh -d
           git config --global user.name "Werner Dijkerman [GH bot]"
           git config --global user.email "github@dj-wasabi.nl"
 
