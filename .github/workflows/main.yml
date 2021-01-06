@@ -15,16 +15,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout current repo
-        uses: actions/checkout@v2
-        with:
-          path: main
-
       - name: Checkout dj-wasabi-release repo
         uses: actions/checkout@v2
         with:
           repository: dj-wasabi/dj-wasabi-release
           path: dj-wasabi-release
+
+      - name: Checkout current repo
+        uses: actions/checkout@v2
+        with:
+          path: main
 
       - name: Commit Changelog file
         run: main/.github/update-changelog.sh
