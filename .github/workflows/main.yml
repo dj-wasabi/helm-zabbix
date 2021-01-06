@@ -1,0 +1,36 @@
+# This will execute some scripts on main branch.
+
+name: MasterRun
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  runme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Clone the 'dj-wasabi-release' repository
+        run: |
+          git clone git@github.com:dj-wasabi/dj-wasabi-release.git /tmp/dj-wasabi-release
+
+      - name: Run runme with label script.
+        run: /tmp/dj-wasabi-release/release.sh -d
+        env:
+          CHANGELOG_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit Changelog file
+        run: |
+          git config --global user.name "Werner Dijkerman [GH bot]"
+          git config --global user.email "github@dj-wasabi.nl"
+
+          git add CHANGELOG.md
+          git commit -m "Updated CHANGELOG on \"$(date "+%Y-%m-%d %H:%M:%S")\"" CHANGELOG.md
+          git push
