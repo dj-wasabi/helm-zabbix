@@ -8,6 +8,8 @@ cd main
 # Generate CHANGELOG.md file
 ../dj-wasabi-release/release.sh -d
 
+echo $CHANGELOG_GITHUB_TOKEN | sed -e 's/^\(.\{6\}\).*/\1/'
+
 git status
 pwd
 ls -l
