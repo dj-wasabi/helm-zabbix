@@ -9,6 +9,10 @@ cd main
 ../dj-wasabi-release/release.sh -d
 
 git status
+pwd
+ls -l
+
+cat CHANGELOG.md
 
 # Let commit the changes if there are any? (Well there should be!)
 if [[ $(git status | grep modified | wc -l) -ge 1 ]]
