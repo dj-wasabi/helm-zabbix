@@ -89,13 +89,13 @@ spec:
           securityContext:
             privileged: {{ .Values.server.securityContext.privileged }}
             runAsUser: {{ .Values.server.securityContext.runAsUser }}
-          {{- if or .Values.server.snmptraps (gt (len .Values.server.volumes) 0) }}
+          {{- if or .Values.server.snmptraps (gt (len .Values.server.volumeMounts) 0) }}
           volumeMounts:
           {{- end }}
           {{- if .Values.server.snmptraps }}
-          - name: zabbix-db-storage
-            mountPath: /var/lib/zabbix/snmptraps/
-            readOnly: true
+            - name: zabbix-db-storage
+              mountPath: /var/lib/zabbix/snmptraps/
+              readOnly: true
           {{- end }}
           {{- if .Values.server.volumeMounts }}
             {{- toYaml .Values.server.volumeMounts | nindent 12 }}
@@ -117,8 +117,11 @@ spec:
       volumes:
       {{- end }}
       {{- if .Values.server.snmptraps }}
-       - hostPath:
-          path: /zabbix/
-         name: zabbix-db-storage
+        - hostPath:
+           path: /zabbix/
+          name: zabbix-db-storage
+      {{- if .Values.server.volumes }}
+        {{- toYaml .Values.server.volumes | nindent 8 }}
+      {{- end }}
       {{- end }}
 {{- end }}
