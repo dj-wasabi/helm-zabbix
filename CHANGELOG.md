@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.0.3...HEAD)
 
+**Breaking changes:**
+
+- Added network policy;Updated to Zabbix 5.2;Zabbix Server now statefulset [\#12](https://github.com/dj-wasabi/helm-zabbix/pull/12) ([dj-wasabi](https://github.com/dj-wasabi))
+
 **Implemented enhancements:**
 
 - Added new action [\#8](https://github.com/dj-wasabi/helm-zabbix/pull/8) ([dj-wasabi](https://github.com/dj-wasabi))
@@ -11,6 +15,10 @@
 **Fixed bugs:**
 
 - custom volumes don't work for server [\#9](https://github.com/dj-wasabi/helm-zabbix/issues/9)
+
+**Closed issues:**
+
+- Agents don't connect the server [\#11](https://github.com/dj-wasabi/helm-zabbix/issues/11)
 
 **Merged pull requests:**
 
