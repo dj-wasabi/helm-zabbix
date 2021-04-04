@@ -1,12 +1,14 @@
 {{- if and .Values.server.enabled -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: zabbix-server
+  namespace: "{{ .Values.zabbix.namespace }}"
   labels:
     app: zabbix-server
 spec:
   replicas: 1
+  serviceName: zabbix-server
   selector:
     matchLabels:
       app: zabbix-server
@@ -36,7 +38,12 @@ spec:
             tcpSocket:
               port: zabbix-trapper
             initialDelaySeconds: 15
-            periodSeconds: 20
+            periodSeconds: 10
+          startupProbe:
+            tcpSocket:
+              port: zabbix-trapper
+            failureThreshold: 30
+            periodSeconds: 10
           env:
           {{- if eq .Values.zabbix.database.type "mysql" }}
           - name: MYSQL_USER
@@ -89,10 +96,10 @@ spec:
           securityContext:
             privileged: {{ .Values.server.securityContext.privileged }}
             runAsUser: {{ .Values.server.securityContext.runAsUser }}
-          {{- if or .Values.server.snmptraps (gt (len .Values.server.volumeMounts) 0) }}
+          {{- if or .Values.server.snmptraps.enabled (gt (len .Values.server.volumeMounts) 0) }}
           volumeMounts:
           {{- end }}
-          {{- if .Values.server.snmptraps }}
+          {{- if .Values.server.snmptraps.enabled }}
             - name: zabbix-db-storage
               mountPath: /var/lib/zabbix/snmptraps/
               readOnly: true
@@ -100,7 +107,7 @@ spec:
           {{- if .Values.server.volumeMounts }}
             {{- toYaml .Values.server.volumeMounts | nindent 12 }}
           {{- end }}
-        {{- if .Values.server.snmptraps }}
+        {{- if .Values.server.snmptraps.enabled }}
         - name: zabbix-snmptraps
           image: "zabbix/zabbix-snmptraps:alpine-{{ if .Values.server.version }}{{ .Values.server.version }}{{- else }}{{ .Values.zabbix.version }}{{- end }}"
           imagePullPolicy: Always
@@ -113,10 +120,10 @@ spec:
             mountPath: /var/lib/zabbix/snmptraps/
             readOnly: false
         {{- end }}
-      {{- if or .Values.server.snmptraps (gt (len .Values.server.volumes) 0) }}
+      {{- if or .Values.server.snmptraps.enabled (gt (len .Values.server.volumes) 0) }}
       volumes:
       {{- end }}
-      {{- if .Values.server.snmptraps }}
+      {{- if .Values.server.snmptraps.enabled }}
         - hostPath:
            path: /zabbix/
           name: zabbix-db-storage

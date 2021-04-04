@@ -2,24 +2,25 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: zabbix-server
+  name: "zabbix-server"
   labels:
     app: zabbix
   namespace: zabbix
 spec:
+  clusterIP: None
   ports:
   - port: 10051
     targetPort: 10051
     protocol: TCP
-    name: zabbix-trapper
+    name: "zabbix-trapper"
   {{- if .Values.server.snmptraps.enabled }}
   - port: 162
     targetPort: 1162
     protocol: UDP
-    name: snmp-trap
+    name: "snmp-trap"
   {{- end }}
   selector:
-    app: zabbix-server
+    app: "zabbix-server"
 {{- if .Values.server.externalIPs }}
   externalIPs:
   {{- toYaml .Values.server.externalIPs | nindent 8 }}

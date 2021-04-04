@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zabbix-web
+  namespace: "{{ .Values.zabbix.namespace }}"
   labels:
     app: zabbix-web
 spec:

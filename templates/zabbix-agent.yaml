@@ -3,9 +3,9 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: zabbix-agent
+  namespace: "{{ .Values.zabbix.namespace }}"
   labels:
-    app: zabbix
-    tier: agent
+    app: zabbix-agent
 spec:
   updateStrategy:
    type: RollingUpdate
@@ -13,13 +13,14 @@ spec:
     maxUnavailable: 1
   selector:
     matchLabels:
-      app: zabbix
+      app: zabbix-agent
   template:
     metadata:
       labels:
         name: zabbix-agent
-        app: zabbix
+        app: zabbix-agent
     spec:
+      # hostNetwork: true
       containers:
         - name: zabbix-agent
           {{ if .Values.agent.image }}
@@ -43,7 +44,7 @@ spec:
           {{- if .Values.agent.server.host }}
             value: "{{ .Values.agent.server.host }}"
           {{- else }}
-            value: "zabbix-server.{{ .Release.Namespace }}.svc"
+            value: "0.0.0.0/0,zabbix-server-0.{{ .Release.Namespace }}.svc"
           {{- end }}
           - name: ZBX_PASSIVE_ALLOW
             value: "{{ .Values.agent.passiveagent }}"

@@ -1,0 +1,33 @@
+{{- if and .Values.zabbix.networkPolicy.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: zabbix-agent
+  namespace: "{{ .Values.zabbix.namespace }}"
+spec:
+  podSelector:
+    matchLabels:
+      app: zabbix-agent
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: zabbix-server
+      ports:
+        - port: 10050
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: zabbix-server
+      ports:
+        - port: 10051
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - port: 53
+          protocol: UDP
+{{- end }}
