@@ -1,27 +1,27 @@
 suite: test zabbix-web
 templates:
-  - zabbix-web.yaml
+- zabbix-web.yaml
 tests:
-  - it: should work
-    asserts:
-      - isKind:
-          of: Deployment
-      - equal:
-          path: spec.template.spec.containers[0].image
-          value: "zabbix/zabbix-web-nginx-mysql:alpine-5.0-latest"
-      - equal:
-          path: spec.template.spec.containers[0].imagePullPolicy
-          value: IfNotPresent
-      - equal:
-          path: spec.template.spec.containers[0].securityContext.privileged
-          value: true
-      - equal:
-          path: spec.template.spec.containers[0].securityContext.runAsUser
-          value: 1997
-      - equal:
-          path: spec.template.spec.containers[0].env[2].name
-          value: MYSQL_USER
-      - isNotNull:
-          path: spec.template.spec.containers[0].volumeMounts
-      - isNotNull:
-          path: spec.template.spec.volumes
+- it: should work
+  asserts:
+  - isKind:
+      of: Deployment
+  - equal:
+      path: spec.template.spec.containers[0].image
+      value: zabbix/zabbix-web-nginx-mysql:alpine-5.2-latest
+  - equal:
+      path: spec.template.spec.containers[0].imagePullPolicy
+      value: IfNotPresent
+  - equal:
+      path: spec.template.spec.containers[0].securityContext.privileged
+      value: true
+  - equal:
+      path: spec.template.spec.containers[0].securityContext.runAsUser
+      value: 1997
+  - equal:
+      path: spec.template.spec.containers[0].env[2].name
+      value: MYSQL_USER
+  - isNotNull:
+      path: spec.template.spec.containers[0].volumeMounts
+  - isNotNull:
+      path: spec.template.spec.volumes

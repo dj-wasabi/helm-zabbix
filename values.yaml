@@ -7,21 +7,24 @@ ingress:
   enabled: true
   annotations: {}
   hosts:
-    - host: www.example.com
-      secretName: www.example.com
-      paths:
-        - "/"
+  - host: www.example.com
+    secretName: www.example.com
+    paths:
+    - /
   # tls:
   #   - hosts:
   #     - www.example.com
   #     secretName: www.example.com
 
 zabbix:
-  version: 5.0-latest
+  version: 5.2-latest
   database:
     type: mysql
     name: zabbix
     host: mysql-8.default.svc.cluster.local
+  namespace: zabbix
+  networkPolicy:
+    enabled: true
 
 server:
   enabled: true
@@ -51,7 +54,7 @@ agent:
     privileged: true
     runAsUser: 1997
   server:
-    host: ""
+    host: ''
   timeout: 10
   startagents: 3
   passiveagent: true

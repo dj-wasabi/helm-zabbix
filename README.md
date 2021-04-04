@@ -4,27 +4,35 @@
 ![GitHub Release Date](https://img.shields.io/github/release-date/dj-wasabi/helm-zabbix)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dj-wasabi/helm-zabbix)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 
 Table of content:
+<!--TOC-->
 
 - [HELM-ZABBIX](#helm-zabbix)
-  * [Prerequisites](#prerequisites)
-  * [Dependencies](#dependencies)
+- [Introduction](#introduction)
+  - [Prerequisites](#prerequisites)
+  - [Dependencies](#dependencies)
 - [Installation](#installation)
-  * [server-db-secret](#server-db-secret)
-  * [www.example.com](#wwwexamplecom)
-  * [proxy-db-secret](#proxy-db-secret)
-  * [Install the HELM Chart](#install-the-helm-chart)
+  - [server-db-secret](#server-db-secret)
+  - [www.example.com](#wwwexamplecom)
+  - [proxy-db-secret](#proxy-db-secret)
+  - [Install the HELM Chart](#install-the-helm-chart)
 - [Configuration](#configuration)
-  * [Zabbix overal](#zabbix-overal)
-  * [Zabbix Server](#zabbix-server)
-  * [Zabbix Web](#zabbix-web)
-  * [Zabbix Agent](#zabbix-agent)
-    + [agent.volumes_host](#-agentvolumes-host-)
-    + [agent.volumes](#-agentvolumes)
-  * [Zabbix Proxy](#zabbix-proxy)
-  * [Zabbix JavaGateway](#zabbix-javagateway)
+  - [Zabbix overal](#zabbix-overal)
+  - [Zabbix Server](#zabbix-server)
+  - [Zabbix Web](#zabbix-web)
+  - [Zabbix Agent](#zabbix-agent)
+    - [`agent.volumes_host`](#agentvolumes_host)
+    - [`agent.volumes`](#agentvolumes)
+  - [Zabbix Proxy](#zabbix-proxy)
+  - [Zabbix JavaGateway](#zabbix-javagateway)
+  - [Network Policies](#network-policies)
+
+<!--TOC-->
+
+# Introduction
 
 [WIP] Work in Progress (I've started a puppet module (owned by vox-populi now), have created several Ansible roles (Now part of the collection.zabbix) so why not starting a HELM Chart for Zabbix.)
 
@@ -156,6 +164,8 @@ Parameter | Description | Default
 `zabbix.database.type`|The type of database to be used.|`mysql`
 `zabbix.database.name`|The name of the database.| `zabbix`
 `zabbix.database.host`|The host of the database.| `zabbix`
+`zabbix.namespace`|The namespace on which Zabbix is running..| `zabbix`
+`zabbix.networkPolicy.enabled`|If the network policies are enabled.| `true`
 
 ## Zabbix Server
 
@@ -231,3 +241,19 @@ Parameter | Description | Default
 Parameter | Description | Default
 --------- | ----------- | -------
 `javagateway.enabled`|If the Zabbix Java Gateway needs to be deployed or not.|`false`
+
+## Network Policies
+
+When `zabbix.networkPolicy.enabled` is set to `true` (Which is default), 3 networkpolicies are installed:
+
+```sh
+$ kubectl -n zabbix get networkpolicies
+NAME            POD-SELECTOR        AGE
+zabbix-agent    app=zabbix-agent    32m
+zabbix-server   app=zabbix-server   32m
+zabbix-web      app=zabbix-web      32m
+```
+
+The Zabbix Server only allows connections from and to both the Zabbix Web on port 10051 and the Zabbix Agent. The Zabbix Server also allows connections to be made to either port 3306 (MySQL) or 5432 (PostGreSQL), depending on the database type.
+
+The Zabbix Agent only allows connections from and to the Zabbix Server on port 10050. Both the Zabbix Server and Agent will allow DNS request made to `kube-dns`.

@@ -9,7 +9,9 @@ The following Zabbix components are installed:
 {{ if .Values.web.enabled -}}
 * Zabbix Web
 {{- end }}
-
+{{ if and .Values.zabbix.networkPolicy.enabled }}
+Network policies are enabled.
+{{- end }}
 {{ if .Values.ingress.enabled -}}
 {{- range .Values.ingress.hosts }}
 Zabbix web interface is available on: {{ .host | quote }}
