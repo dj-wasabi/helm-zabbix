@@ -4,7 +4,7 @@
 ![GitHub Release Date](https://img.shields.io/github/release-date/dj-wasabi/helm-zabbix)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dj-wasabi/helm-zabbix)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/dj-wasabi/pre-commit-hooks)
 
 
 Table of content:
