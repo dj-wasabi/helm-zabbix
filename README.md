@@ -74,9 +74,9 @@ The following tables provides an overview of the meaning for the values.
 
 Parameter | Description
 --------- | -----------
-db-zbx-user|The username that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
-db-zbx-pass|The password that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
-db-root-pass|The (MySQL or PgSQL) password for the `ROOT` or `postgres` user.
+`db-zbx-user`|The username that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
+`db-zbx-pass`|The password that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
+`db-root-pass`|The (MySQL or PgSQL) password for the `ROOT` or `postgres` user.
 
 ## www.example.com
 
@@ -137,9 +137,9 @@ The following tables provides an overview of the meaning for the values.
 
 Parameter | Description
 --------- | -----------
-db-zbx-user|The username that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
-db-zbx-pass|The password that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
-db-root-pass|The (MySQL or PgSQL) password for the `ROOT` or `postgres` user.
+`db-zbx-user`|The username that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
+`db-zbx-pass`|The password that Zabbix can use to authenticate against a (MySQL or PgSQL) database.
+`db-root-pass`|The (MySQL or PgSQL) password for the `ROOT` or `postgres` user.
 
 ## Install the HELM Chart
 
@@ -160,11 +160,11 @@ The following provides an overview of the settings that can be used for all comp
 
 Parameter | Description | Default
 --------- | ----------- | -------
-`zabbix.version`|The version to be deployed.| `5.0-latest`
+`zabbix.version`|The version to be deployed.| `5.2-latest`
 `zabbix.database.type`|The type of database to be used.|`mysql`
 `zabbix.database.name`|The name of the database.| `zabbix`
 `zabbix.database.host`|The host of the database.| `zabbix`
-`zabbix.namespace`|The namespace on which Zabbix is running..| `zabbix`
+`zabbix.namespace`|The namespace on which Zabbix is running.| `zabbix`
 `zabbix.networkPolicy.enabled`|If the network policies are enabled.| `true`
 
 ## Zabbix Server
@@ -173,7 +173,7 @@ Parameter | Description | Default
 --------- | ----------- | -------
 `server.image` |If you want to override the default official Zabbix image. This should also contain the appropriate tag. | `None`
 `server.enabled` |If the Zabbix Server needs to be deployed or not. | `true`
-`server.version`|The version of the Zabbix Server.| `5.0-latest`
+`server.version`|The version of the Zabbix Server.| `5.2-latest`
 `server.database.type`|The type of database to be used (Is overriding the `zabbix.database.type`).|`mysql`
 `server.database.name`|The name of the database (Is overriding the `zabbix.database.name`).| `zabbix`
 `server.database.host`|The host of the database (Is overriding the `zabbix.database.host`).| `zabbix`
@@ -200,7 +200,7 @@ Parameter | Description | Default
 --------- | ----------- | -------
 `image.image` |If you want to override the default official Zabbix image. This should also contain the appropriate tag. | `None`
 `agent.enabled`|If the Zabbix Agent needs to be deployed or not.|`true`
-`agent.version`|The version of the Zabbix Agent.| `5.0-latest`
+`agent.version`|The version of the Zabbix Agent.| `5.2-latest`
 `agent.server.host`|.The FQDN on which the Zabbix Server is available.|`zabbix-server.zabbix.svc`
 `agent.timeout`|The timeout of the Zabbix Agent.|`10`
 `agent.startagents`|The amount of agents to start.|`3`
