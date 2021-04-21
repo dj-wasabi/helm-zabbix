@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/dj-wasabi/helm-zabbix/tree/HEAD)
+
+[Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.1.0...HEAD)
+
+**Implemented enhancements:**
+
+- Added some minor documentation changes [\#13](https://github.com/dj-wasabi/helm-zabbix/pull/13) ([dj-wasabi](https://github.com/dj-wasabi))
+
 ## [0.1.0](https://github.com/dj-wasabi/helm-zabbix/tree/0.1.0) (2021-04-04)
 
 [Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.0.3...0.1.0)
