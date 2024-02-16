@@ -4,7 +4,7 @@ image:
   pullPolicy: IfNotPresent
 
 ingress:
-  enabled: true
+  enabled: false
   annotations: {}
   hosts:
   - host: www.example.com
@@ -17,11 +17,11 @@ ingress:
   #     secretName: www.example.com
 
 zabbix:
-  version: 5.2-latest
+  version: 6.4-latest
   database:
     type: mysql
     name: zabbix
-    host: mysql-8.default.svc.cluster.local
+    host: mysql.default.svc.cluster.local
   namespace: zabbix
   networkPolicy:
     enabled: true
@@ -39,6 +39,21 @@ server:
   env: {}
   volumes: []
   volumeMounts: []
+  readinessProbe:
+    tcpSocket:
+      port: zabbix-trapper
+    initialDelaySeconds: 5
+    periodSeconds: 10
+  livenessProbe:
+    tcpSocket:
+      port: zabbix-trapper
+    initialDelaySeconds: 15
+    periodSeconds: 10
+  startupProbe:
+    tcpSocket:
+      port: zabbix-trapper
+    failureThreshold: 30
+    periodSeconds: 10
 
 web:
   enabled: true
@@ -47,6 +62,35 @@ web:
   securityContext:
     privileged: true
     runAsUser: 1997
+  env: {}
+  resources:
+    limits:
+      cpu: 200m
+      memory: 400Mi
+    requests:
+      cpu: 200m
+      memory: 400Mi
+  livenessProbe:
+    httpGet:
+      path: /
+      port: web-http
+      scheme: HTTP
+    initialDelaySeconds: 15
+    timeoutSeconds: 2
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 5
+  readinessProbe:
+    httpGet:
+      path: /
+      port: web-http
+      scheme: HTTP
+    initialDelaySeconds: 15
+    timeoutSeconds: 2
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 5
+
 
 agent:
   enabled: true
@@ -55,6 +99,7 @@ agent:
     runAsUser: 1997
   server:
     host: ''
+  env: {}
   timeout: 10
   startagents: 3
   passiveagent: true

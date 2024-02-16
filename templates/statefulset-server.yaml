@@ -6,6 +6,7 @@ metadata:
   namespace: "{{ .Values.zabbix.namespace }}"
   labels:
     app: zabbix-server
+    {{- include "helm-zabbix.labels" . | nindent 4 }}
 spec:
   replicas: 1
   serviceName: zabbix-server
@@ -19,9 +20,9 @@ spec:
     spec:
       containers:
         - name: zabbix-server
-          {{ if .Values.server.image }}
+          {{ if .Values.server.image -}}
           image: "{{ .Values.server.image }}"
-          {{ else }}
+          {{ else -}}
           image: "zabbix/zabbix-server-{{ .Values.zabbix.database.type }}:alpine-{{ if .Values.server.version }}{{ .Values.server.version }}{{- else }}{{ .Values.zabbix.version }}{{- end }}"
           {{- end }}
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
@@ -29,21 +30,18 @@ spec:
           - containerPort: 10051
             protocol: TCP
             name: zabbix-trapper
-          readinessProbe:
-            tcpSocket:
-              port: zabbix-trapper
-            initialDelaySeconds: 5
-            periodSeconds: 10
+          {{- if hasKey .Values.server "livenessProbe" }}
           livenessProbe:
-            tcpSocket:
-              port: zabbix-trapper
-            initialDelaySeconds: 15
-            periodSeconds: 10
+          {{- toYaml .Values.server.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if hasKey .Values.server "readinessProbe" }}
+          readinessProbe:
+          {{- toYaml .Values.server.readinessProbe | nindent 12 }}
+          {{- end }}
+          {{- if hasKey .Values.server "startupProbe" }}
           startupProbe:
-            tcpSocket:
-              port: zabbix-trapper
-            failureThreshold: 30
-            periodSeconds: 10
+          {{- toYaml .Values.server.startupProbe | nindent 12 }}
+          {{- end }}
           env:
           {{- if eq .Values.zabbix.database.type "mysql" }}
           - name: MYSQL_USER
@@ -89,10 +87,9 @@ spec:
           {{- else }}
             value: "{{ .Values.zabbix.database.host }}"
           {{- end }}
-          {{- range $key, $value := .Values.server.env }}
-          - name: {{ $key }}
-            value: {{ $value | quote }}
-          {{- end }}
+          envFrom:
+          - configMapRef:
+              name: zabbix-server
           securityContext:
             privileged: {{ .Values.server.securityContext.privileged }}
             runAsUser: {{ .Values.server.securityContext.runAsUser }}

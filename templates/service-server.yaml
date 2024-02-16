@@ -5,6 +5,7 @@ metadata:
   name: "zabbix-server"
   labels:
     app: zabbix
+    {{- include "helm-zabbix.labels" . | nindent 4 }}
   namespace: zabbix
 spec:
   clusterIP: None

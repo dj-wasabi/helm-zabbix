@@ -12,23 +12,29 @@ Table of content:
 
 - [HELM-ZABBIX](#helm-zabbix)
 - [Introduction](#introduction)
-  - [Prerequisites](#prerequisites)
-  - [Dependencies](#dependencies)
+  * [Prerequisites](#prerequisites)
+  * [Dependencies](#dependencies)
 - [Installation](#installation)
-  - [server-db-secret](#server-db-secret)
-  - [www.example.com](#wwwexamplecom)
-  - [proxy-db-secret](#proxy-db-secret)
-  - [Install the HELM Chart](#install-the-helm-chart)
+  * [server-db-secret](#server-db-secret)
+  * [www.example.com](#wwwexamplecom)
+  * [proxy-db-secret](#proxy-db-secret)
+  * [Install the HELM Chart](#install-the-helm-chart)
 - [Configuration](#configuration)
-  - [Zabbix overal](#zabbix-overal)
-  - [Zabbix Server](#zabbix-server)
-  - [Zabbix Web](#zabbix-web)
-  - [Zabbix Agent](#zabbix-agent)
-    - [`agent.volumes_host`](#agentvolumes_host)
-    - [`agent.volumes`](#agentvolumes)
-  - [Zabbix Proxy](#zabbix-proxy)
-  - [Zabbix JavaGateway](#zabbix-javagateway)
-  - [Network Policies](#network-policies)
+  * [Zabbix overal](#zabbix-overal)
+  * [Zabbix Server](#zabbix-server)
+    + [Example readinessProbe](#example-readinessprobe)
+    + [Example livenessProbe](#example-livenessprobe)
+    + [Example startupProbe](#example-startupprobe)
+  * [Zabbix Web](#zabbix-web)
+    + [Example resources](#example-resources)
+    + [Example livenessProbe](#example-livenessprobe-1)
+    + [Example readinessProbe](#example-readinessprobe-1)
+  * [Zabbix Agent](#zabbix-agent)
+    + [`agent.volumes_host`](#-agentvolumes-host-)
+    + [`agent.volumes`](#-agentvolumes-)
+  * [Zabbix Proxy](#zabbix-proxy)
+  * [Zabbix JavaGateway](#zabbix-javagateway)
+  * [Network Policies](#network-policies)
 
 <!--TOC-->
 
@@ -178,11 +184,44 @@ Parameter | Description | Default
 `server.database.name`|The name of the database (Is overriding the `zabbix.database.name`).| `zabbix`
 `server.database.host`|The host of the database (Is overriding the `zabbix.database.host`).| `zabbix`
 `server.externalIPs`|A list with IPs of outside Kubernetes to access the server| `[]`
-`server.env`|A dict for adding environment variables| `{}`
+`server.env`|A dict for adding environment variables to the pod. | `{}`
 `server.securityContext.privileged`|If you need to run the agent as a privileged Docker container.|`false`
 `server.securityContext.runAsUser` |The UID of the user inside the Docker image.|`1997`
 `server.volumes`|Add additional volumes to be mounted.| `[]`
 `server.volumeMounts`|Add additional volumes to be mounted.| `[]`
+`server.readinessProbe` | Configuration for the `readinessProbe`. | See [readinessProbe](#example-readinessprobe).
+`server.livenessProbe` | Configuration for the `livenessProbe`.| See [livenessProbe](#example-livenessprobe).
+`server.startupProbe` | Configuration for the `startupProbe`. | See [startupProbe](#example-startupprobe).
+
+### Example readinessProbe
+
+```yaml
+  readinessProbe:
+    tcpSocket:
+      port: zabbix-trapper
+    initialDelaySeconds: 5
+    periodSeconds: 10
+```
+
+### Example livenessProbe
+
+```yaml
+  livenessProbe:
+    tcpSocket:
+      port: zabbix-trapper
+    initialDelaySeconds: 15
+    periodSeconds: 10
+```
+
+### Example startupProbe
+
+```yaml
+  startupProbe:
+    tcpSocket:
+      port: zabbix-trapper
+    failureThreshold: 30
+    periodSeconds: 10
+```
 
 ## Zabbix Web
 
@@ -190,9 +229,55 @@ Parameter | Description | Default
 --------- | ----------- | -------
 `web.image` |If you want to override the default official Zabbix image. This should also contain the appropriate tag. | `None`
 `web.webserver`|What kind of webserver do you want to use: `nginx` or `apache`.| `nginx`
+`web.env`|A dict for adding environment variables to the pod. | `{}`
+`web.resources` | Configuration to set minimal and maximum limits | See [resources](#example-resources)
+`web.livenessProbe` | Configuration for the `livenessProbe`.| See [livenessProbe](#example-livenessbrobe)
+`web.readinessProbe` | Configuration for the `readinessProbe`. | See [readinessProbe](#example-readinessbrobe)
 `ingress.enabed`|If Ingress needs to be enabled.| `false`
 `ingress.annotations`| Add additional annotations to configure the Ingress.| `{}`
 `ingress.hosts`|Add FQDN/path configuration to te Ingress.| `{}`
+
+### Example resources
+
+```yaml
+  resources:
+    limits:
+      cpu: 200m
+      memory: 400Mi
+    requests:
+      cpu: 200m
+      memory: 400Mi
+```
+
+### Example livenessProbe
+
+```yaml
+  livenessProbe:
+    httpGet:
+      path: /
+      port: web-http
+      scheme: HTTP
+    initialDelaySeconds: 15
+    timeoutSeconds: 2
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 5
+```
+
+### Example readinessProbe
+
+```yaml
+  readinessProbe:
+    httpGet:
+      path: /
+      port: web-http
+      scheme: HTTP
+    initialDelaySeconds: 15
+    timeoutSeconds: 2
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 5
+```
 
 ## Zabbix Agent
 
@@ -205,6 +290,7 @@ Parameter | Description | Default
 `agent.timeout`|The timeout of the Zabbix Agent.|`10`
 `agent.startagents`|The amount of agents to start.|`3`
 `agent.passiveagent`|If we need to allow passive checks.|`true`
+`agent.env`|A dict for adding environment variables to the pod. | `{}`
 `agent.securityContext.privileged`|If you need to run the agent as a privileged Docker container.|`true`
 `agent.securityContext.runAsUser` |The UID of the user inside the Docker image.|`1997`
 `agent.volumes_host`|If a preconfigured set of volumes to be mounted (`/`, `/etc`, `/sys`, `/proc`, `/var/run`).|`true`
