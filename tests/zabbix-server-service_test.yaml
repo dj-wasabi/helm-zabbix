@@ -1,6 +1,6 @@
 suite: test zabbix-server service
 templates:
-- zabbix-server.service.yaml
+- service-server.yaml
 tests:
 - it: should pass
   set:

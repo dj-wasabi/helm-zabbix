@@ -1,6 +1,6 @@
 suite: test zabbix-server
 templates:
-- zabbix-server.yaml
+- statefulset-server.yaml
 tests:
 - it: should work
   asserts:
@@ -8,7 +8,7 @@ tests:
       of: StatefulSet
   - equal:
       path: spec.template.spec.containers[0].image
-      value: zabbix/zabbix-server-mysql:alpine-5.2-latest
+      value: zabbix/zabbix-server-mysql:alpine-6.4-latest
   - equal:
       path: spec.template.spec.containers[0].imagePullPolicy
       value: IfNotPresent
