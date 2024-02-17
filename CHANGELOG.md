@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/dj-wasabi/helm-zabbix/tree/HEAD)
+
+[Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.1.1...HEAD)
+
+**Implemented enhancements:**
+
+- Various \(small\) updates to the chart [\#16](https://github.com/dj-wasabi/helm-zabbix/pull/16) ([dj-wasabi](https://github.com/dj-wasabi))
+
 ## [0.1.1](https://github.com/dj-wasabi/helm-zabbix/tree/0.1.1) (2021-04-21)
 
 [Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.1.0...0.1.1)
