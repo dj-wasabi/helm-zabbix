@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/dj-wasabi/helm-zabbix/tree/HEAD)
+## [0.2.0](https://github.com/dj-wasabi/helm-zabbix/tree/0.2.0) (2024-02-17)
 
-[Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.1.1...HEAD)
+[Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.1.1...0.2.0)
 
 **Implemented enhancements:**
 
