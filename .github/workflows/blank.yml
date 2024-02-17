@@ -30,4 +30,4 @@ jobs:
       run: helm plugin install https://github.com/quintush/helm-unittest
 
     - name: Run unit tests
-      run: helm unittest -3 .
+      run: helm unittest .

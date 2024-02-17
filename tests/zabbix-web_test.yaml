@@ -1,6 +1,6 @@
 suite: test zabbix-web
 templates:
-- zabbix-web.yaml
+- deployment-web.yaml
 tests:
 - it: should work
   asserts:
@@ -8,7 +8,7 @@ tests:
       of: Deployment
   - equal:
       path: spec.template.spec.containers[0].image
-      value: zabbix/zabbix-web-nginx-mysql:alpine-5.2-latest
+      value: zabbix/zabbix-web-nginx-mysql:alpine-6.4-latest
   - equal:
       path: spec.template.spec.containers[0].imagePullPolicy
       value: IfNotPresent
@@ -20,7 +20,7 @@ tests:
       value: 1997
   - equal:
       path: spec.template.spec.containers[0].env[2].name
-      value: MYSQL_USER
+      value: PHP_TZ
   - isNotNull:
       path: spec.template.spec.containers[0].volumeMounts
   - isNotNull:

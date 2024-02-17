@@ -6,6 +6,7 @@ metadata:
   namespace: "{{ .Values.zabbix.namespace }}"
   labels:
     app: zabbix-agent
+    {{- include "helm-zabbix.labels" . | nindent 4 }}
 spec:
   updateStrategy:
    type: RollingUpdate
@@ -20,12 +21,11 @@ spec:
         name: zabbix-agent
         app: zabbix-agent
     spec:
-      # hostNetwork: true
       containers:
         - name: zabbix-agent
-          {{ if .Values.agent.image }}
+          {{ if .Values.agent.image -}}
           image: "{{ .Values.agent.image }}"
-          {{ else }}
+          {{ else -}}
           image: "zabbix/zabbix-agent:alpine-{{ if .Values.agent.version }}{{ .Values.agent.version }}{{- else }}{{ .Values.zabbix.version }}{{- end }}"
           {{- end }}
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
@@ -44,7 +44,7 @@ spec:
           {{- if .Values.agent.server.host }}
             value: "{{ .Values.agent.server.host }}"
           {{- else }}
-            value: "0.0.0.0/0,zabbix-server-0.{{ .Release.Namespace }}.svc"
+            value: "zabbix-server-0.{{ .Release.Namespace }}.svc"
           {{- end }}
           - name: ZBX_PASSIVE_ALLOW
             value: "{{ .Values.agent.passiveagent }}"
@@ -52,10 +52,9 @@ spec:
             value: "{{ .Values.agent.startagents }}"
           - name: ZBX_TIMEOUT
             value: "{{ .Values.agent.timeout }}"
-          {{- range $key, $value := .Values.agent.env }}
-          - name: {{ $key }}
-            value: {{ $value | quote }}
-          {{- end }}
+          envFrom:
+          - configMapRef:
+              name: zabbix-agent
           securityContext:
             privileged: {{ .Values.agent.securityContext.privileged }}
             runAsUser: {{ .Values.agent.securityContext.runAsUser }}

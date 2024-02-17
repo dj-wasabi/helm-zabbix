@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: "{{ .Values.zabbix.namespace }}"
+  labels:
+    {{- include "helm-zabbix.labels" . | nindent 4 }}
+  name: zabbix-web
+data:
+  {{- if .Values.web.env }}
+  {{- include "common.tplvalues.render" ( dict "value" .Values.web.env "context" $ ) | nindent 2 }}
+  {{- end }}

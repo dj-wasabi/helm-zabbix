@@ -6,6 +6,7 @@ metadata:
   namespace: "{{ .Values.zabbix.namespace }}"
   labels:
     app: zabbix-web
+    {{- include "helm-zabbix.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
@@ -18,9 +19,9 @@ spec:
     spec:
       containers:
         - name: zabbix-web
-          {{ if .Values.web.image }}
+          {{ if .Values.web.image -}}
           image: "{{ .Values.web.image }}"
-          {{ else }}
+          {{ else -}}
           image: zabbix/zabbix-web-{{ .Values.web.webserver }}-{{ .Values.zabbix.database.type }}:alpine-{{ if .Values.web.version }}{{ .Values.web.version }}{{- else }}{{ .Values.zabbix.version }}{{- end }}
           {{- end }}
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
@@ -29,34 +30,21 @@ spec:
             name: web-http
           - containerPort: 8443
             name: web-https
+          {{- if hasKey .Values.web "resources" }}
           resources:
-           limits:
-            cpu: 200m
-            memory: 400Mi
-           requests:
-            cpu: 200m
-            memory: 400Mi
+          {{- toYaml .Values.web.resources | nindent 12 }}
+          {{- end }}
+          {{- if hasKey .Values.web "livenessProbe" }}
           livenessProbe:
-            httpGet:
-              path: /
-              port: web-http
-              scheme: HTTP
-            initialDelaySeconds: 15
-            timeoutSeconds: 2
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 5
+          {{- toYaml .Values.web.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if hasKey .Values.web "readinessProbe" }}
           readinessProbe:
-            httpGet:
-              path: /
-              port: web-http
-              scheme: HTTP
-            initialDelaySeconds: 15
-            timeoutSeconds: 2
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 5
+          {{- toYaml .Values.web.readinessProbe | nindent 12 }}
+          {{- end }}
           env:
+          - name: ZBX_SERVER_HOST
+            value: "zabbix-server-0.{{ .Release.Namespace }}.svc"
           - name: ZBX_SERVER_NAME
             value: "Zabbix kubernetes"
           - name: PHP_TZ
@@ -99,6 +87,9 @@ spec:
           - name: POSTGRES_DB
             value: "{{ .Values.zabbix.database.name }}"
           {{- end }}
+          envFrom:
+          - configMapRef:
+              name: zabbix-web
           - name: DB_SERVER_HOST
           {{- if .Values.server.database.host }}
             value: "{{ .Values.server.database.host }}"

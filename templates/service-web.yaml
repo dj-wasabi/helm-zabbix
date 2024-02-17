@@ -4,6 +4,7 @@ metadata:
   name: zabbix-web
   labels:
     app: zabbix
+    {{- include "helm-zabbix.labels" . | nindent 4 }}
   namespace: zabbix
 spec:
   ports:
