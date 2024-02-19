@@ -5,7 +5,7 @@ metadata:
   labels:
     app: zabbix
     {{- include "helm-zabbix.labels" . | nindent 4 }}
-  namespace: zabbix
+  namespace: "{{ .Values.zabbix.namespace }}"
 spec:
   ports:
   - port: 80
