@@ -192,6 +192,7 @@ Parameter | Description | Default
 `server.readinessProbe` | Configuration for the `readinessProbe`. | See [readinessProbe](#example-readinessprobe).
 `server.livenessProbe` | Configuration for the `livenessProbe`.| See [livenessProbe](#example-livenessprobe).
 `server.startupProbe` | Configuration for the `startupProbe`. | See [startupProbe](#example-startupprobe).
+`server.tolerations`|Add tolerations for scheduling nodes purposes.| `[]`
 
 ### Example readinessProbe
 
@@ -233,6 +234,7 @@ Parameter | Description | Default
 `web.resources` | Configuration to set minimal and maximum limits | See [resources](#example-resources)
 `web.livenessProbe` | Configuration for the `livenessProbe`.| See [livenessProbe](#example-livenessbrobe)
 `web.readinessProbe` | Configuration for the `readinessProbe`. | See [readinessProbe](#example-readinessbrobe)
+`web.tolerations`|Add tolerations for scheduling nodes purposes.| `[]`
 `ingress.enabed`|If Ingress needs to be enabled.| `false`
 `ingress.annotations`| Add additional annotations to configure the Ingress.| `{}`
 `ingress.hosts`|Add FQDN/path configuration to te Ingress.| `{}`
@@ -296,6 +298,7 @@ Parameter | Description | Default
 `agent.volumes_host`|If a preconfigured set of volumes to be mounted (`/`, `/etc`, `/sys`, `/proc`, `/var/run`).|`true`
 `agent.volumes`|Add additional volumes to be mounted.| `[]`
 `agent.volumeMounts`|Add additional volumes to be mounted.| `[]`
+`agent.tolerations`|Add tolerations for scheduling nodes purposes.| `[]`
 
 ### `agent.volumes_host`
 

@@ -96,6 +96,10 @@ spec:
           hostPath:
             path: /var/run
       {{- end }}
+      {{- if .Values.agent.tolerations }}
+      tolerations:
+        {{- toYaml .Values.agent.tolerations | nindent 8 }}
+      {{- end }}
       {{- if .Values.agent.volumes }}
         {{- toYaml .Values.agent.volumes | nindent 8 }}
       {{- end }}

@@ -39,6 +39,7 @@ server:
   env: {}
   volumes: []
   volumeMounts: []
+  tolerations: []
   readinessProbe:
     tcpSocket:
       port: zabbix-trapper
@@ -63,6 +64,7 @@ web:
     privileged: true
     runAsUser: 1997
   env: {}
+  tolerations: []
   resources:
     limits:
       cpu: 200m
@@ -100,6 +102,7 @@ agent:
   server:
     host: ''
   env: {}
+  tolerations: []
   timeout: 10
   startagents: 3
   passiveagent: true
