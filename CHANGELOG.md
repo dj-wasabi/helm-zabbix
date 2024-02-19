@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/dj-wasabi/helm-zabbix/tree/HEAD)
+
+[Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.2.0...HEAD)
+
+**Implemented enhancements:**
+
+- Added options to add tolerations [\#17](https://github.com/dj-wasabi/helm-zabbix/pull/17) ([dj-wasabi](https://github.com/dj-wasabi))
+
 ## [0.2.0](https://github.com/dj-wasabi/helm-zabbix/tree/0.2.0) (2024-02-17)
 
 [Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.1.1...0.2.0)
