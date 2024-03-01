@@ -1,0 +1,13 @@
+---
+
+agent:
+  env:
+    MY_AGENT: "yes"
+
+server:
+  env:
+    ZABBIX_POLLER: "9"
+
+web:
+  env:
+    ZABBIX_WEB_KEY: "true"

@@ -1,0 +1,13 @@
+suite: test configmap agent
+templates:
+  - configmap-agent.yaml
+tests:
+  - it: should find value "YES" in MY_AGENT configuration
+    values:
+    - ./values/configmap.yaml
+    asserts:
+      - isKind:
+          of: ConfigMap         
+      - matchRegex:
+          path: data["MY_AGENT"]
+          pattern: "yes"

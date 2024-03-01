@@ -1,0 +1,13 @@
+suite: test configmap web
+templates:
+  - configmap-web.yaml
+tests:
+  - it: should find value "true" in ZABBIX_WEB_KEY configuration
+    values:
+    - ./values/configmap.yaml
+    asserts:
+      - isKind:
+          of: ConfigMap
+      - matchRegex:
+          path: data["ZABBIX_WEB_KEY"]
+          pattern: "true"
