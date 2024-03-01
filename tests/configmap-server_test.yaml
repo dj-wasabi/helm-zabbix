@@ -1,0 +1,13 @@
+suite: test configmap server
+templates:
+  - configmap-server.yaml
+tests:
+  - it: should find value "9" in Zabbix Poller configuration
+    values:
+    - ./values/configmap.yaml
+    asserts:
+      - isKind:
+          of: ConfigMap
+      - matchRegex:
+          path: data["ZABBIX_POLLER"]
+          pattern: "9"
