@@ -73,6 +73,10 @@ spec:
             - name: host-var-run-volume
               mountPath: /var/run
           {{- end }}
+          {{- if .Values.agent.userparams }}
+            - name: userparams
+              mountPath: /etc/zabbix/zabbix_agent.d
+          {{- end }}
           {{- if .Values.agent.volumeMounts }}
             {{- toYaml .Values.agent.volumeMounts | nindent 12 }}
           {{- end }}
@@ -95,6 +99,11 @@ spec:
         - name: host-var-run-volume
           hostPath:
             path: /var/run
+      {{- end }}
+      {{- if .Values.agent.userparams }}
+        - name: userparams
+          configMap:
+            name: zabbix-agent-userparams
       {{- end }}
       {{- if .Values.agent.tolerations }}
       tolerations:

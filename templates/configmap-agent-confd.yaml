@@ -1,0 +1,11 @@
+{{- if .Values.agent.userparams }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: "{{ .Values.zabbix.namespace }}"
+  labels:
+    {{- include "helm-zabbix.labels" . | nindent 4 }}
+  name: zabbix-agent-userparams
+data:
+  {{- include "common.tplvalues.render" ( dict "value" .Values.agent.userparams "context" $ ) | nindent 2 }}
+{{- end }}

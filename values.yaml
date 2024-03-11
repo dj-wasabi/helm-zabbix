@@ -103,6 +103,7 @@ agent:
     host: ''
   env: {}
   tolerations: []
+  userparams: {}
   timeout: 10
   startagents: 3
   passiveagent: true

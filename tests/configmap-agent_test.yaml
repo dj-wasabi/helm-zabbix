@@ -7,7 +7,7 @@ tests:
     - ./values/configmap.yaml
     asserts:
       - isKind:
-          of: ConfigMap         
+          of: ConfigMap
       - matchRegex:
           path: data["MY_AGENT"]
           pattern: "yes"
