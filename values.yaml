@@ -96,6 +96,7 @@ web:
 
 agent:
   enabled: true
+  usehostNetwork: true
   securityContext:
     privileged: true
     runAsUser: 1997

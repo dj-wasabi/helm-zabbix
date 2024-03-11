@@ -288,6 +288,7 @@ Parameter | Description | Default
 --------- | ----------- | -------
 `image.image` |If you want to override the default official Zabbix image. This should also contain the appropriate tag. | `None`
 `agent.enabled`|If the Zabbix Agent needs to be deployed or not.|`true`
+`agent.usehostNetwork` | If you want to use the hostname of the worker node where the agent is running on. | `true`
 `agent.version`|The version of the Zabbix Agent.| `5.2-latest`
 `agent.server.host`|.The FQDN on which the Zabbix Server is available.|`zabbix-server.zabbix.svc`
 `agent.timeout`|The timeout of the Zabbix Agent.|`10`

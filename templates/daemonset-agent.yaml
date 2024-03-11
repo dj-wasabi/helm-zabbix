@@ -21,6 +21,9 @@ spec:
         name: zabbix-agent
         app: zabbix-agent
     spec:
+      {{ if .Values.agent.usehostNetwork -}}
+      hostNetwork: true
+      {{- end }}
       containers:
         - name: zabbix-agent
           {{ if .Values.agent.image -}}

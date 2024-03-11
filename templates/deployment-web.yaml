@@ -87,15 +87,15 @@ spec:
           - name: POSTGRES_DB
             value: "{{ .Values.zabbix.database.name }}"
           {{- end }}
-          envFrom:
-          - configMapRef:
-              name: zabbix-web
           - name: DB_SERVER_HOST
           {{- if .Values.server.database.host }}
             value: "{{ .Values.server.database.host }}"
           {{- else }}
             value: "{{ .Values.zabbix.database.host }}"
           {{- end }}
+          envFrom:
+          - configMapRef:
+              name: zabbix-web
           securityContext:
             privileged: {{ .Values.web.securityContext.privileged }}
             runAsUser: {{ .Values.web.securityContext.runAsUser }}
