@@ -12,29 +12,30 @@ Table of content:
 
 - [HELM-ZABBIX](#helm-zabbix)
 - [Introduction](#introduction)
-  * [Prerequisites](#prerequisites)
-  * [Dependencies](#dependencies)
+  - [Prerequisites](#prerequisites)
+  - [Dependencies](#dependencies)
 - [Installation](#installation)
-  * [server-db-secret](#server-db-secret)
-  * [www.example.com](#wwwexamplecom)
-  * [proxy-db-secret](#proxy-db-secret)
-  * [Install the HELM Chart](#install-the-helm-chart)
+  - [server-db-secret](#server-db-secret)
+  - [www.example.com](#wwwexamplecom)
+  - [proxy-db-secret](#proxy-db-secret)
+  - [Install the HELM Chart](#install-the-helm-chart)
 - [Configuration](#configuration)
-  * [Zabbix overal](#zabbix-overal)
-  * [Zabbix Server](#zabbix-server)
-    + [Example readinessProbe](#example-readinessprobe)
-    + [Example livenessProbe](#example-livenessprobe)
-    + [Example startupProbe](#example-startupprobe)
-  * [Zabbix Web](#zabbix-web)
-    + [Example resources](#example-resources)
-    + [Example livenessProbe](#example-livenessprobe-1)
-    + [Example readinessProbe](#example-readinessprobe-1)
-  * [Zabbix Agent](#zabbix-agent)
-    + [`agent.volumes_host`](#-agentvolumes-host-)
-    + [`agent.volumes`](#-agentvolumes-)
-  * [Zabbix Proxy](#zabbix-proxy)
-  * [Zabbix JavaGateway](#zabbix-javagateway)
-  * [Network Policies](#network-policies)
+  - [Zabbix overal](#zabbix-overal)
+  - [Zabbix Server](#zabbix-server)
+    - [Example readinessProbe](#example-readinessprobe)
+    - [Example livenessProbe](#example-livenessprobe)
+    - [Example startupProbe](#example-startupprobe)
+  - [Zabbix Web](#zabbix-web)
+    - [Example resources](#example-resources)
+    - [Example livenessProbe](#example-livenessprobe-1)
+    - [Example readinessProbe](#example-readinessprobe-1)
+  - [Zabbix Agent](#zabbix-agent)
+    - [`agent.volumes_host`](#agentvolumes_host)
+    - [`agent.userparams`](#agentuserparams)
+    - [`agent.volumes`](#agentvolumes)
+  - [Zabbix Proxy](#zabbix-proxy)
+  - [Zabbix JavaGateway](#zabbix-javagateway)
+  - [Network Policies](#network-policies)
 
 <!--TOC-->
 
@@ -296,6 +297,7 @@ Parameter | Description | Default
 `agent.securityContext.privileged`|If you need to run the agent as a privileged Docker container.|`true`
 `agent.securityContext.runAsUser` |The UID of the user inside the Docker image.|`1997`
 `agent.volumes_host`|If a preconfigured set of volumes to be mounted (`/`, `/etc`, `/sys`, `/proc`, `/var/run`).|`true`
+`agent.userparams` | Provide additional UserParameter options | `{}`
 `agent.volumes`|Add additional volumes to be mounted.| `[]`
 `agent.volumeMounts`|Add additional volumes to be mounted.| `[]`
 `agent.tolerations`|Add tolerations for scheduling nodes purposes.| `[]`
@@ -311,6 +313,18 @@ Host | Pod |
 `/sys` | `/hostfs/sys`
 `/proc` | `/hostfs/proc`
 `/var/run` | `/var/run`
+
+### `agent.userparams`
+
+The configuration requires the name of a file, resulting in the UserParameter options specified as a dict
+
+```yaml
+  userparams:
+    mysql.conf: |
+      UserParameter=mysql.ping_to,mysqladmin -uroot ping | grep -c alive
+    alive.conf: |
+      UserParameter=alive.ami,echo yes
+```
 
 ### `agent.volumes`
 
