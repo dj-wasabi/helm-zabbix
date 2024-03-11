@@ -1,11 +1,20 @@
 # Changelog
 
+## [Unreleased](https://github.com/dj-wasabi/helm-zabbix/tree/HEAD)
+
+[Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.2.1...HEAD)
+
+**Implemented enhancements:**
+
+- Be able to use the hostname of the Worker node for the Agent [\#20](https://github.com/dj-wasabi/helm-zabbix/pull/20) ([dj-wasabi](https://github.com/dj-wasabi))
+
 ## [0.2.1](https://github.com/dj-wasabi/helm-zabbix/tree/0.2.1) (2024-03-11)
 
 [Full Changelog](https://github.com/dj-wasabi/helm-zabbix/compare/0.2.0...0.2.1)
 
 **Implemented enhancements:**
 
+- Added option to add UserParameter options [\#19](https://github.com/dj-wasabi/helm-zabbix/pull/19) ([dj-wasabi](https://github.com/dj-wasabi))
 - Added some unittests for configmaps [\#18](https://github.com/dj-wasabi/helm-zabbix/pull/18) ([dj-wasabi](https://github.com/dj-wasabi))
 - Added options to add tolerations [\#17](https://github.com/dj-wasabi/helm-zabbix/pull/17) ([dj-wasabi](https://github.com/dj-wasabi))
 
@@ -35,7 +44,6 @@
 
 **Implemented enhancements:**
 
-- Added option to add UserParameter options [\#19](https://github.com/dj-wasabi/helm-zabbix/pull/19) ([dj-wasabi](https://github.com/dj-wasabi))
 - Added new action [\#8](https://github.com/dj-wasabi/helm-zabbix/pull/8) ([dj-wasabi](https://github.com/dj-wasabi))
 
 **Fixed bugs:**
