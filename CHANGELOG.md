@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Added option to add UserParameter options [\#19](https://github.com/dj-wasabi/helm-zabbix/pull/19) ([dj-wasabi](https://github.com/dj-wasabi))
 - Added some unittests for configmaps [\#18](https://github.com/dj-wasabi/helm-zabbix/pull/18) ([dj-wasabi](https://github.com/dj-wasabi))
 - Added options to add tolerations [\#17](https://github.com/dj-wasabi/helm-zabbix/pull/17) ([dj-wasabi](https://github.com/dj-wasabi))
 
